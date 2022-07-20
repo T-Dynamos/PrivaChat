@@ -1,0 +1,50 @@
+#: import partial functools.partial
+#: import Clock kivy.clock.Clock
+
+MDScreen:
+  name:"main"
+  MDCard:
+    size_hint:None,None
+    size:[app.x,dp(70)]
+    radius:[dp(10),dp(10),0,0]
+    RelativeLayout:
+      AnchorLayout:
+        anchor_x:"left"
+        IconButton:
+          id:back_button
+          icon:"menu"          
+          on_press:Clock.schedule_once(partial(app.animate_icon,self,"arrow-left" if self.icon == "menu" else "menu" )),Clock.schedule_once(app.open_drawer,0.4)
+        MDLabel:
+          text:"PrivaChat"
+          halign:"center"
+          font_size:"25sp"
+          font_name:"assets/Poppins-Bold.ttf"
+  AnchorLayout:
+    MDIconButton:
+      icon:"account-supervisor-outline"
+      theme_icon_color:"Custom"
+      icon_color:app.theme_cls.bg_light
+      icon_size:dp(100)
+
+  MDCard:
+    id:drawer
+    pos_hint:{"center_x":-0.5,"center_y":0.5}
+    md_bg_color:0,0,0,0
+    on_press:app.open_drawer()
+    opacity:1
+    MDCard:
+      size_hint:None,None
+      size:[app.x//1.5,app.y]
+      radius:[0,dp(20),dp(20),0]
+      RelativeLayout:
+        AnchorLayout:
+          anchor_y:"bottom"
+          anchor_x:"right"
+          IconButton:
+            icon:"arrow-left"
+            on_press:Clock.schedule_once(partial(app.animate_icon,app.root.ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
+
+        AnchorLayout:
+          anchor_y:"top"
+          MDLabel:
+            text:"PrivaChat"
