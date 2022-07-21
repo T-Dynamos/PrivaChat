@@ -55,8 +55,9 @@ class PrivaChat(MDApp):
         anim2.start(instance)
         anim2.bind(on_complete=change_icon)
 
-    def animate_pos_hint(self,instance,pos_hint):
+    def animate_pos_hint(self,instance,pos_hint,md_bg_color=None):
         anim = Animation(
+            md_bg_color=md_bg_color,
             pos_hint=pos_hint,
             d= 0.3
             )

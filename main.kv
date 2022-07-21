@@ -2,126 +2,156 @@
 #: import Clock kivy.clock.Clock
 
 MDScreen:
-  md_bg_color:app.theme_cls.bg_darkest
-  name:"main"
-  MDCard:
-    size_hint:None,None
-    size:[app.x,dp(70)]
-    radius:[dp(10),dp(10),0,0]
-    RelativeLayout:
-      AnchorLayout:
-        anchor_x:"left"
-        IconButton:
-          id:back_button
-          icon:"menu"          
-          on_press:Clock.schedule_once(partial(app.animate_icon,self,"arrow-left" if self.icon == "menu" else "menu" )),Clock.schedule_once(app.open_drawer,0.4)
-        MDLabel:
-          text:"PrivaChat"
-          halign:"center"
-          font_size:"25sp"
-          font_name:"assets/Poppins-Bold.ttf"
-  AnchorLayout:
-    ScreenManager:
-      size_hint:None,None
-      size:app.x,app.y-dp(140)
-      id:tab_manager
-      MDScreen:
-        name:"chat"
-        md_bg_color:app.theme_cls.bg_darkest
-        AnchorLayout:
-          MDIconButton:
-            icon:"account-supervisor-outline"
-            theme_icon_color:"Custom"
-            icon_color:app.theme_cls.bg_light
-            icon_size:dp(100)
-        MDCard:
-          pos_hint:{"center_x":0.85,"center_y":0.15}
-          radius:dp(10)
-          md_bg_color:app.theme_cls.primary_light
-          size_hint:None,None 
-          size:dp(60),dp(60)
-          ripple_behavior:True
-          MDIconButton:
-            size_hint:1,1
-            icon:"plus"
-      MDScreen:
-        name:"server"
-        md_bg_color:app.theme_cls.bg_darkest
-        AnchorLayout:
-          MDIconButton:
-            icon:"cloud-outline"
-            theme_icon_color:"Custom"
-            icon_color:app.theme_cls.bg_light
-            icon_size:dp(100)
+	md_bg_color:app.theme_cls.bg_darkest
+	name:"main"
+	MDCard:
+		size_hint:None,None
+		size:[app.x,dp(70)]
+		radius:[dp(10),dp(10),0,0]
+		RelativeLayout:
+			AnchorLayout:
+				anchor_x:"left"
+				IconButton:
+					id:back_button
+					icon:"menu"          
+					on_press:Clock.schedule_once(partial(app.animate_icon,self,"arrow-left" if self.icon == "menu" else "menu" )),Clock.schedule_once(app.open_drawer,0.4)
+				MDLabel:
+					text:"PrivaChat"
+					halign:"center"
+					font_size:"25sp"
+					font_name:"assets/Poppins-Bold.ttf"
+	AnchorLayout:
+		ScreenManager:
+			size_hint:None,None
+			size:app.x,app.y-dp(140)
+			id:tab_manager
+			MDScreen:
+				name:"chat"
+				md_bg_color:app.theme_cls.bg_darkest
+				AnchorLayout:
+					MDIconButton:
+						icon:"account-supervisor-outline"
+						theme_icon_color:"Custom"
+						icon_color:app.theme_cls.bg_light
+						icon_size:dp(100)
+				MDCard:
+					pos_hint:{"center_x":0.5,"center_y":0.15}
+					radius:dp(10)
+					md_bg_color:app.theme_cls.primary_dark
+					size_hint:None,None 
+					size:app.x-dp(80),dp(60)
+					ripple_behavior:True
+					RelativeLayout:
+						MDLabel:
+							text:"Connect to server"
+							font_name:"assets/Poppins-Regular.ttf"
+							halign:"center"
+						MDIconButton:
+							ripple_scale:0
+							pos_hint:{"center_x":0.9}
+							size_hint:1,1
+							icon:"plus"
+			MDScreen:
+				name:"server"
+				md_bg_color:app.theme_cls.bg_darkest
+				AnchorLayout:
+					MDIconButton:
+						icon:"cloud-outline"
+						theme_icon_color:"Custom"
+						icon_color:app.theme_cls.bg_light
+						icon_size:dp(100)
+				MDCard:
+					pos_hint:{"center_x":0.5,"center_y":0.15}
+					radius:dp(10)
+					md_bg_color:app.theme_cls.accent_dark
+					size_hint:None,None 
+					size:app.x-dp(80),dp(60)
+					ripple_behavior:True
+					RelativeLayout:
+						MDLabel:
+							text:"Start a Server"
+							font_name:"assets/Poppins-Regular.ttf"
+							halign:"center"
+						MDIconButton:
+							ripple_scale:0
+							pos_hint:{"center_x":0.9}
+							size_hint:1,1
+							icon:"plus"
 
-  MDCard:
-    id:control
-    pos_hint:{"center_x":0.5,"center_y":0.95}
-    size_hint:None,None
-    size:[app.x-dp(25),dp(50)]
-    radius:dp(10)
-    RelativeLayout:
-      MDCard:
-        id:card
-        pos_hint:{"center_x":0.25,"center_y":0.5}
-        md_bg_color:app.theme_cls.accent_dark
-        size_hint:None,None 
-        size:control.width//2-dp(10),dp(40)    
-        radius:dp(10) 
+	MDCard:
+		id:control
+		pos_hint:{"center_x":0.5,"center_y":0.95}
+		size_hint:None,None
+		size:[app.x-dp(25),dp(50)]
+		radius:dp(10)
+		RelativeLayout:
+			MDCard:
+				id:card
+				pos_hint:{"center_x":0.25,"center_y":0.5}
+				md_bg_color:app.theme_cls.primary_dark
+				size_hint:None,None 
+				size:control.width//2-dp(10),dp(40)    
+				radius:dp(10) 
 
-      MDBoxLayout:
-        AnchorLayout:
-          MDCard:
-            pos_hint:{"center_x":0.25,"center_y":0.5}
-            md_bg_color:0,0,0,0
-            size_hint:None,None 
-            size:control.width//2-dp(10),dp(40)
-            on_press:app.animate_pos_hint(card,self.pos_hint);tab_manager.transition.direction = "right";tab_manager.current = "chat"
-            MDLabel:
-              text:"Chat"
-              halign:"center"
-              font_name:"assets/Poppins-Medium.ttf"
-        AnchorLayout:
-          MDCard:
-            pos_hint:{"center_x":0.75,"center_y":0.5}
-            md_bg_color:0,0,0,0
-            size_hint:None,None 
-            size:control.width//2-dp(10),dp(40)
-            on_press:app.animate_pos_hint(card,self.pos_hint);tab_manager.transition.direction = "left";tab_manager.current = "server"
+			MDBoxLayout:
+				AnchorLayout:
+					MDCard:
+						pos_hint:{"center_x":0.25,"center_y":0.5}
+						md_bg_color:0,0,0,0
+						size_hint:None,None 
+						size:control.width//2-dp(10),dp(40)
+						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.primary_dark);tab_manager.transition.direction = "right";tab_manager.current = "chat"
+						MDLabel:
+							text:"Chat"
+							halign:"center"
+							font_name:"assets/Poppins-Medium.ttf"
+				AnchorLayout:
+					MDCard:
+						pos_hint:{"center_x":0.75,"center_y":0.5}
+						md_bg_color:0,0,0,0
+						size_hint:None,None 
+						size:control.width//2-dp(10),dp(40)
+						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_dark);tab_manager.transition.direction = "left";tab_manager.current = "server"
 
-            MDLabel:
-              text:"Server"
-              halign:"center"
-              font_name:"assets/Poppins-Medium.ttf"
+						MDLabel:
+							text:"Server"
+							halign:"center"
+							font_name:"assets/Poppins-Medium.ttf"
 
 
 
-  MDCard:
-    id:drawer
-    pos_hint:{"center_x":-0.5,"center_y":0.5}
-    md_bg_color:0,0,0,0
-    on_press:app.open_drawer()
-    opacity:1
-    MDCard:
-      size_hint:None,None
-      size:[app.x//1.5,app.y]
-      radius:[0,dp(20),dp(20),0]
-      RelativeLayout:
-        AnchorLayout:
-          anchor_y:"bottom"
-          anchor_x:"right"
-          IconButton:
-            icon:"arrow-left"
-            on_press:Clock.schedule_once(partial(app.animate_icon,app.root.ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
+	MDCard:
+		id:drawer
+		pos_hint:{"center_x":-0.5,"center_y":0.5}
+		md_bg_color:0,0,0,0
+		on_press:app.open_drawer()
+		opacity:1
+		MDCard:
+			size_hint:None,None
+			size:[app.x//1.5,app.y]
+			radius:[0,dp(20),dp(20),0]
+			orientation: 'vertical'
+			MDLabel:
+				size_hint:None,None 
+				size:app.x//1.5,dp(50)
+				text:"PrivaChat"
+				halign:"center"
+				font_name:"assets/Poppins-Bold.ttf"
+				font_size:"25sp"
+			MDSeparator:
+			MDCard:
+				size_hint:None,None 
+				size:app.x//2-dp(10),dp(40)
 
-        AnchorLayout:
-          anchor_y:"top"
-          MDLabel:
-            size_hint:None,None 
-            size:app.x//1.5,dp(50)
-            text:"PrivaChat"
-            halign:"center"
-            font_name:"assets/Poppins-Bold.ttf"
-            font_size:"25sp"
+			RelativeLayout:
+				AnchorLayout:
+					anchor_y:"bottom"
+					anchor_x:"right"
+					IconButton:
+						icon:"arrow-left"
+						on_press:Clock.schedule_once(partial(app.animate_icon,app.root.ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
+
+
+
 
 
