@@ -6,6 +6,7 @@ from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import MDIconButton
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.utils import platform
 from kivy.clock import Clock
 from kivy.animation import Animation
 import socket 
@@ -27,7 +28,8 @@ class PrivaChat(MDApp):
         return Builder.load_file("main.kv")
 
     def on_start(self):
-        Window.size = [dp(400),dp(600)]
+        if platform != "android":
+            Window.size = [dp(400),dp(600)]
 
     def animate_icon(self,instance,icon,*largs):
         
@@ -53,8 +55,12 @@ class PrivaChat(MDApp):
         anim2.start(instance)
         anim2.bind(on_complete=change_icon)
 
-
-
+    def animate_pos_hint(self,instance,pos_hint):
+        anim = Animation(
+            pos_hint=pos_hint,
+            d= 0.3
+            )
+        anim.start(instance)
     def open_drawer(self,*largs):
         animation_open = Animation(
                 pos_hint={"center_x":0.5,"center_y":0.5},
