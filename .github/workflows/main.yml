@@ -1,0 +1,21 @@
+name: Build
+on:[workflow_dispatch]
+jobs:
+  build-android:
+    name: Build for Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          workdir: .
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: package-privachat
+          path: ${{ steps.buildozer.outputs.filename }}
