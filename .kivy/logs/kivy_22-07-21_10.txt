@@ -1,0 +1,34 @@
+[INFO   ] Logger: Record log in /storage/emulated/0/PrivaChat/.kivy/logs/kivy_22-07-21_10.txt
+[INFO   ] Kivy: v2.0.0
+[INFO   ] Kivy: Installed at "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivy/__init__.py"
+[INFO   ] Python: v3.9.7 (default, Oct  9 2021, 08:02:40) 
+[GCC 11.1.0]
+[INFO   ] Python: Interpreter at "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/bin/python3"
+[INFO   ] Factory: 186 symbols loaded
+[INFO   ] KivyMD: 1.0.0.dev0, git-Unknown, 2022-07-03 (installed at "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivymd/__init__.py")
+[INFO   ] Image: Providers: img_tex, img_dds, img_sdl2, img_pil (img_ffpyplayer ignored)
+[INFO   ] Text: Provider: sdl2
+[INFO   ] Window: Provider: sdl2
+[CRITICAL] Window: Unable to find any valuable Window provider. Please enable debug logging (e.g. add -d if running from the command line, or change the log level in the config) and re-run your app to identify potential causes
+sdl2 - RuntimeError: b'Could not fetch native window'
+  File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivy/core/__init__.py", line 70, in core_select_lib
+    cls = cls()
+  File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivy/core/window/window_sdl2.py", line 152, in __init__
+    super(WindowSDL, self).__init__()
+  File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivy/core/window/__init__.py", line 982, in __init__
+    self.create_window()
+  File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivy/core/window/window_sdl2.py", line 286, in create_window
+    self.system_size = _size = self._win.setup_window(
+  File "kivy/core/window/_window_sdl2.pyx", line 226, in kivy.core.window._window_sdl2._WindowSDL2Storage.setup_window
+  File "kivy/core/window/_window_sdl2.pyx", line 74, in kivy.core.window._window_sdl2._WindowSDL2Storage.die
+
+[WARNING] stderr: Traceback (most recent call last):
+[WARNING] stderr:   File "/storage/emulated/0/PrivaChat/main.py", line 2, in <module>
+[WARNING] stderr:     from kivymd.app import MDApp
+[WARNING] stderr:   File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivymd/app.py", line 50, in <module>
+[WARNING] stderr:     from kivymd.theming import ThemeManager
+[WARNING] stderr:   File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivymd/theming.py", line 193, in <module>
+[WARNING] stderr:     from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
+[WARNING] stderr:   File "/data/user/0/ru.iiec.pydroid3/files/arm-linux-androideabi/lib/python3.9/site-packages/kivymd/material_resources.py", line 20, in <module>
+[WARNING] stderr:     elif Window.width >= dp(600) and Window.height >= dp(600):
+[WARNING] stderr: AttributeError: 'NoneType' object has no attribute 'width'

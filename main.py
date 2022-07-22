@@ -73,11 +73,11 @@ class PrivaChat(MDApp):
     def open_drawer(self,*largs):
         animation_open = Animation(
                 pos_hint={"center_x":0.5,"center_y":0.5},
-                d=0.4
+                d=0.2
                )
         animation_close = Animation(
                 pos_hint={"center_x":-0.5,"center_y":0.5},
-                d=0.4
+                d=0.2
                 )
         if self.root.ids.drawer.pos_hint == {"center_x":-0.5,"center_y":0.5}:
             animation_open.start(self.root.ids.drawer) 
