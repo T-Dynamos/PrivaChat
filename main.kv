@@ -12,6 +12,7 @@ MDScreen:
 			AnchorLayout:
 				anchor_x:"left"
 				IconButton:
+					ripple_scale:0
 					id:back_button
 					icon:"menu"          
 					on_press:Clock.schedule_once(partial(app.animate_icon,self,"arrow-left" if self.icon == "menu" else "menu" )),Clock.schedule_once(app.open_drawer,0.4)
@@ -30,6 +31,7 @@ MDScreen:
 				md_bg_color:app.theme_cls.bg_darkest
 				AnchorLayout:
 					MDIconButton:
+						ripple_scale:0
 						icon:"account-supervisor-outline"
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
@@ -57,13 +59,14 @@ MDScreen:
 				AnchorLayout:
 					MDIconButton:
 						icon:"cloud-outline"
+						ripple_scale:0
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
 						icon_size:dp(100)
 				MDCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}
 					radius:dp(10)
-					md_bg_color:app.theme_cls.accent_dark
+					md_bg_color:app.theme_cls.accent_color
 					size_hint:None,None 
 					size:app.x-dp(80),dp(60)
 					ripple_behavior:True
@@ -111,7 +114,7 @@ MDScreen:
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
 						size:control.width//2-dp(10),dp(40)
-						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_dark);tab_manager.transition.direction = "left";tab_manager.current = "server"
+						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_color);tab_manager.transition.direction = "left";tab_manager.current = "server"
 
 						MDLabel:
 							text:"Server"
@@ -126,6 +129,7 @@ MDScreen:
 		md_bg_color:0,0,0,0
 		on_press:app.open_drawer()
 		opacity:1
+		radius:0
 		MDCard:
 			size_hint:None,None
 			size:[app.x//1.5,app.y]
@@ -136,18 +140,120 @@ MDScreen:
 				size:app.x//1.5,dp(50)
 				text:"PrivaChat"
 				halign:"center"
+				valign:"bottom"
 				font_name:"assets/Poppins-Bold.ttf"
 				font_size:"25sp"
-			MDSeparator:
-			MDCard:
+			MDLabel:
 				size_hint:None,None 
-				size:app.x//2-dp(10),dp(40)
+				size:app.x//1.5,dp(30)
+				text:"Made with Love and Python"
+				halign:"center"
+				font_name:"assets/Poppins-Regular.ttf"
+				font_size:"15sp"
+			MDSeparator:
+			MDBoxLayout:
+				adaptive_height:True
+				orientation:"vertical"
+				spacing:dp(20)
+				MDBoxLayout:
+					size_hint:None,None 
+					size:dp(20),dp(20)
+				AnchorLayout:
+					size_hint:None,None 
+					size:[app.x//1.5,dp(80)]
+					MDCard:
+						ripple_behavior:True
+						size_hint:None,None 
+						size:[app.x//1.5-dp(20),dp(80)]
+						radius:dp(10)
+						md_bg_color:app.theme_cls.primary_dark
+						RelativeLayout:
+							MDLabel:
+								pos_hint:{"center_x":0.35,"center_y":0.5}
+								text:"Disconnect Chat"
+								font_name:"assets/Poppins-Medium.ttf"
+								halign:"center"
+							IconButton:
+								pos_hint:{"center_x":0.85,"center_y":0.5}
+								icon:"chat-remove-outline"
+								size_hint:1,1
+								ripple_scale:0
 
+				AnchorLayout:
+					size_hint:None,None 
+					size:[app.x//1.5,dp(80)]
+					MDCard:
+						ripple_behavior:True
+						size_hint:None,None 
+						size:[app.x//1.5-dp(20),dp(80)]
+						radius:dp(10)
+						md_bg_color:app.theme_cls.accent_color
+						RelativeLayout:
+							MDLabel:
+								pos_hint:{"center_x":0.3,"center_y":0.5}
+								text:"Stop Server"
+								font_name:"assets/Poppins-Medium.ttf"
+								halign:"center"
+							IconButton:
+								pos_hint:{"center_x":0.85,"center_y":0.5}
+								icon:"cloud-off-outline"
+								size_hint:1,1
+								ripple_scale:0
+				HoverLayout:
+					radius:0,dp(10),dp(10),0
+					size_hint:None,None 
+					radius:0,dp(10),dp(10),0
+					size:app.x//1.5-dp(10),dp(50)
+					on_enter: self.md_bg_color = app.theme_cls.bg_normal
+					on_leave:self.md_bg_color = 0,0,0,0
+					RelativeLayout:
+						MDLabel:
+							pos_hint:{"center_x":0.25,"center_y":0.5}
+							text:"Settings"
+							font_name:"assets/Poppins-Medium.ttf"
+							halign:"center"
+						IconButton:
+							pos_hint:{"center_x":0.85,"center_y":0.5}
+							icon:"chevron-right"
+							ripple_scale:3
+				HoverLayout:
+					radius:0,dp(10),dp(10),0
+					size_hint:None,None 
+					size:app.x//1.5-dp(10),dp(50)
+					on_enter: self.md_bg_color = app.theme_cls.bg_normal
+					on_leave:self.md_bg_color = 0,0,0,0
+					RelativeLayout:
+						MDLabel:
+							pos_hint:{"center_x":0.32,"center_y":0.5}
+							text:"Remove ADS"
+							font_name:"assets/Poppins-Medium.ttf"
+							halign:"center"
+						IconButton:
+							pos_hint:{"center_x":0.85,"center_y":0.5}
+							icon:"chevron-right"
+							ripple_scale:3
+				HoverLayout:
+					radius:0,dp(10),dp(10),0
+					size_hint:None,None 
+					size:app.x//1.5-dp(10),dp(50)
+					on_enter: self.md_bg_color = app.theme_cls.bg_normal
+					on_leave:self.md_bg_color = 0,0,0,0
+					RelativeLayout:
+						MDLabel:
+							pos_hint:{"center_x":0.25,"center_y":0.5}
+							text:"Rate US"
+							font_name:"assets/Poppins-Medium.ttf"
+							halign:"center"
+						IconButton:
+							pos_hint:{"center_x":0.85,"center_y":0.5}
+							icon:"chevron-right"
+							ripple_scale:3
 			RelativeLayout:
 				AnchorLayout:
 					anchor_y:"bottom"
 					anchor_x:"right"
 					IconButton:
+						ripple_scale:0
 						icon:"arrow-left"
 						on_press:Clock.schedule_once(partial(app.animate_icon,app.root.ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
 

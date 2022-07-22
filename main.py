@@ -4,6 +4,7 @@ from kivymd.uix.card import MDCard
 from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import platform
@@ -14,15 +15,22 @@ import os
 import select 
 import _thread
 
+__version__ = "1.0"
+
 class IconButton(MDIconButton,RotateWidget):
+    pass
+
+class HoverLayout(MDCard,HoverBehavior):
     pass
 
 class PrivaChat(MDApp):
 
+    __version__ = __version__
     x = Window.size[0]
     y = Window.size[1]
 
     def build(self):
+        self.theme_cls.accent_palette = "Orange"
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.material_style = "M3"
         return Builder.load_file("main.kv")
