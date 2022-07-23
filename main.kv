@@ -43,6 +43,7 @@ MDScreen:
 					size_hint:None,None 
 					size:app.x-dp(80),dp(60)
 					ripple_behavior:True
+					on_press:app.connect_chat()
 					RelativeLayout:
 						MDLabel:
 							text:"Connect to server"
@@ -70,6 +71,7 @@ MDScreen:
 					size_hint:None,None 
 					size:app.x-dp(80),dp(60)
 					ripple_behavior:True
+					on_press:app.start_server()
 					RelativeLayout:
 						MDLabel:
 							text:"Start a Server"
@@ -206,6 +208,7 @@ MDScreen:
 					size:dp(280)-dp(10),dp(50)
 					on_enter: self.md_bg_color = app.theme_cls.bg_normal
 					on_leave:self.md_bg_color = 0,0,0,0
+					on_press:app.open_settings()
 					RelativeLayout:
 						MDLabel:
 							pos_hint:{"center_x":0.25,"center_y":0.5}

@@ -1,0 +1,29 @@
+<ListSwitch@MDBoxLayout>:
+	text:""
+	size_hint:None,None 
+	size:app.x,dp(50)
+	padding:dp(10)
+	RelativeLayout:
+		MDLabel:
+			text:root.text
+			font_name:"assets/Poppins-Medium.ttf"
+			font_size:"15sp"
+		MDSwitch:
+			pos_hint:{"center_x":0.8,"center_y":0.3}
+
+ModalView:
+	background_color:app.theme_cls.bg_normal
+	MDLabel:
+		text:"Settings"
+		bold:True
+		font_name:"assets/Poppins-Medium.ttf"
+		font_size:"35sp"
+	MDBoxLayout:
+		md_bg_color:app.theme_cls.bg_normal
+		orientation: 'vertical'
+		padding:dp(10)
+		ListSwitch:
+			text:"Dark mode"
+		ListSwitch:
+			text:"Save chats"
+
