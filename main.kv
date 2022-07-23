@@ -206,8 +206,8 @@ MDScreen:
 					size_hint:None,None 
 					radius:0,dp(10),dp(10),0
 					size:dp(280)-dp(10),dp(50)
-					on_enter: self.md_bg_color = app.theme_cls.bg_normal
-					on_leave:self.md_bg_color = 0,0,0,0
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
 					on_press:app.open_settings()
 					RelativeLayout:
 						MDLabel:
@@ -223,8 +223,8 @@ MDScreen:
 					radius:0,dp(10),dp(10),0
 					size_hint:None,None 
 					size:dp(280)-dp(10),dp(50)
-					on_enter: self.md_bg_color = app.theme_cls.bg_normal
-					on_leave:self.md_bg_color = 0,0,0,0
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
 					RelativeLayout:
 						MDLabel:
 							pos_hint:{"center_x":0.32,"center_y":0.5}
@@ -239,8 +239,8 @@ MDScreen:
 					radius:0,dp(10),dp(10),0
 					size_hint:None,None 
 					size:dp(280)-dp(10),dp(50)
-					on_enter: self.md_bg_color = app.theme_cls.bg_normal
-					on_leave:self.md_bg_color = 0,0,0,0
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
 					RelativeLayout:
 						MDLabel:
 							pos_hint:{"center_x":0.25,"center_y":0.5}
@@ -258,7 +258,7 @@ MDScreen:
 					IconButton:
 						ripple_scale:0
 						icon:"arrow-left"
-						on_press:Clock.schedule_once(partial(app.animate_icon,app.root.ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
+						on_press:Clock.schedule_once(partial(app.animate_icon,app.screen_manager.get_screen("main").ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1),app.open_drawer()
 
 
 

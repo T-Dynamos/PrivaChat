@@ -94,7 +94,14 @@ class PrivaChat(MDApp):
             d= 0.3
             )
         anim.start(instance)
-        
+ 
+    def animate_md_bg_color(self,instance,md_bg_color=None):
+        anim = Animation(
+            md_bg_color=md_bg_color,
+            d= 0.3
+            )
+        anim.start(instance)
+
     def open_modal(self,instance):
     	anim = Animation(
                 opacity=1,
