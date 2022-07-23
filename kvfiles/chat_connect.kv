@@ -1,4 +1,6 @@
 ModalView:
+	on_open:app.open_modal(self)
+	on_dismiss:app.close_modal(self)
 	background_color: (0,0,0,0.3)
 	RelativeLayout:
 		MDCard:

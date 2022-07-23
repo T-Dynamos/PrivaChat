@@ -94,7 +94,18 @@ class PrivaChat(MDApp):
             d= 0.3
             )
         anim.start(instance)
+        
+    def open_modal(self,instance):
+    	anim = Animation(
+                opacity=1,
+                d=0.3
+                ).start(instance)
 
+    def close_modal(self,instance):
+    	anim = Animation(
+                opacity=0,
+                d=0.3
+                ).start(instance)
 
     def open_drawer(self,*largs):
         animation_open = Animation(
@@ -115,8 +126,6 @@ class PrivaChat(MDApp):
             self.screen_manager.get_screen("main").ids.drawer.md_bg_color  = 0,0,0,0
             animation_close.start(self.screen_manager.get_screen("main").ids.drawer)
             Clock.schedule_once(partial(self.animate_icon,self.screen_manager.get_screen("main").ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1)
-
-
 
     def connect_chat(self):
         self.chat_view.open()
