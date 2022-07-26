@@ -10,7 +10,19 @@
 			font_size:"15sp"
 		MDSwitch:
 			pos_hint:{"center_x":0.8,"center_y":0.3}
-
+<ListIcon@MDBoxLayout>:
+	text:""
+	size_hint:None,None 
+	size:app.x,dp(50)
+	padding:dp(10)
+	RelativeLayout:
+		MDLabel:
+			text:root.text
+			font_name:"assets/Poppins-Medium.ttf"
+			font_size:"15sp"
+		MDIconButton:
+			icon:"chevron-right"
+			pos_hint:{"center_x":0.9,"center_y":0.3}
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
@@ -18,15 +30,15 @@ ModalView:
 	opacity:0
 	RelativeLayout:
 		MDLabel:
-			pos_hint:{"center_x":0.6,"center_y":0.95}
+			pos_hint:{"center_x":0.535,"center_y":0.95}
 			text:"Settings"
 			bold:True
 			font_name:"assets/Poppins-Bold.ttf"
 			font_size:"35sp"
 		MDCard:
 			size_hint:None,None
-			size:app.x,dp(200)
-			pos_hint:{"center_x":0.5,"center_y":0.85}
+			size:app.x,dp(300)
+			pos_hint:{"center_x":0.5,"center_y":0.8}
 			md_bg_color:0,0,0,0
 			orientation: 'vertical'
 			padding:dp(10)
@@ -34,4 +46,9 @@ ModalView:
 				text:"Dark mode"
 			ListSwitch:
 				text:"Save chats"
+			MDSeparator:
+			ListIcon:
+				text:"Change theme"
+			ListIcon:
+				text:"Change chat save path"						
 

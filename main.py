@@ -5,6 +5,7 @@ from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.relativelayout import *
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import platform
@@ -17,10 +18,17 @@ import socket
 import os
 import select
 import _thread
+import appServer
 
 __version__ = "1.0"
 
 class IconButton(MDIconButton,RotateWidget):
+    pass
+
+class ChatText(MDRelativeLayout):
+    pass
+
+class PersonText(MDRelativeLayout):
     pass
 
 class HoverLayout(MDCard,HoverBehavior):
@@ -29,6 +37,7 @@ class HoverLayout(MDCard,HoverBehavior):
 class PrivaChat(MDApp):
 
     __version__ = __version__
+    
     x = Window.size[0]
     y = Window.size[1]
 
@@ -38,8 +47,13 @@ class PrivaChat(MDApp):
     chat_view = None
     main_screen = None
     settings_view = None
+    chat = None
+    chat_img = ""
+
+    ChatText = ChatText
 
     def build(self):
+        self.chat_img = "/usr/share/backgrounds/hack.jpg"
         self.theme_cls.accent_palette = "Orange"
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.material_style = "M3"
@@ -58,6 +72,7 @@ class PrivaChat(MDApp):
         self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
+        self.chat = Builder.load_file("kvfiles/chat.kv")        
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"
@@ -134,13 +149,10 @@ class PrivaChat(MDApp):
             animation_close.start(self.screen_manager.get_screen("main").ids.drawer)
             Clock.schedule_once(partial(self.animate_icon,self.screen_manager.get_screen("main").ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1)
 
-    def connect_chat(self):
-        self.chat_view.open()
-
-    def start_server(self):
-        self.server_view.open()
-
-    def open_settings(self):
-        self.settings_view.open()
+    def handle_chat(self,instance,grid,view):
+        if instance.text != " ":
+            grid.add_widget(ChatText(text=instance.text))
+            view.scroll_to(instance)
+            instance.text = ""
 
 PrivaChat().run()
