@@ -149,10 +149,39 @@ class PrivaChat(MDApp):
             animation_close.start(self.screen_manager.get_screen("main").ids.drawer)
             Clock.schedule_once(partial(self.animate_icon,self.screen_manager.get_screen("main").ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1)
 
+    def change_size_keyboard(self,instance):
+        if platform == "android":
+            from kvdroid.tools import keyboard_height
+            if instance.size[-1] != self.y-keyboard_height:
+                anim = Animation(
+                    size=[self.x,self.y-keyboard_height],
+                    d="0.2"
+                    )
+                anim.start(instance)
+            else:
+                anim = Animation(
+                    size=[self.x,self.y],
+                    d="0.2"
+                    )
+                anim.start(instance)
+        else:
+            pass
+
+
     def handle_chat(self,instance,grid,view):
-        if instance.text != " ":
-            grid.add_widget(ChatText(text=instance.text))
+        if instance.text != len(instance.text)*" ":
+            widget = ChatText()
+            widget.text = instance.text
+            grid(widget)
             view.scroll_to(instance)
-            instance.text = ""
+            instance.text = " "
+
+    def start_server(self,port):
+        try:
+            appServer.start_server(port)
+        except Exception as e:
+            print(str(e))
+
+
 
 PrivaChat().run()
