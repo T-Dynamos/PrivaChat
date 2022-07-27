@@ -54,6 +54,9 @@ MDScreen:
 							pos_hint:{"center_x":0.9}
 							size_hint:1,1
 							icon:"plus"
+						MDCard:
+							md_bg_color:0,0,0,0
+							on_press:app.chat_view.open()
 			MDScreen:
 				name:"server"
 				md_bg_color:app.theme_cls.bg_darkest
@@ -64,6 +67,23 @@ MDScreen:
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
 						icon_size:dp(100)
+				AnchorLayout:
+					id:server_card
+					opacity:0
+					MDCard:
+						size_hint:None,None
+						size:app.x-dp(40),app.y//3+dp(40)
+						ScrollView:
+							MDGridLayout:
+								id:server_loger
+								adaptive_height:True
+								cols:1 
+								padding:dp(10)
+								MDLabel:
+									size_hint:None,None
+									size:app.x-dp(40),dp(20)
+									text:"Logs start here"
+									font_name:"assets/SourceCodePro-Regular.otf"
 				MDCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}
 					radius:dp(10)
@@ -71,18 +91,22 @@ MDScreen:
 					size_hint:None,None 
 					size:app.x-dp(80),dp(60)
 					ripple_behavior:True
-					on_press:app.server_view.open()
+					on_press:app.server_view.open() if app.server_running == False else app.stop_server()
 					RelativeLayout:
 						MDLabel:
+							id:server_text
 							text:"Start a Server"
 							font_name:"assets/Poppins-Regular.ttf"
 							halign:"center"
-						MDIconButton:
+						IconButton:
+							id:server_icon
 							ripple_scale:0
 							pos_hint:{"center_x":0.9}
 							size_hint:1,1
 							icon:"plus"
-
+						MDCard:
+							md_bg_color:0,0,0,0
+							on_press:app.server_view.open() if app.server_running == False else app.stop_server()
 	MDCard:
 		id:control
 		pos_hint:{"center_x":0.5,"center_y":0.95}

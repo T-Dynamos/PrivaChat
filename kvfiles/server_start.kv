@@ -28,18 +28,20 @@ ModalView:
 					MDTextField:
 						id:test_text_feild
 						mode:"fill"
-						max_text_length:72
+						max_text_length:5
 						radius:dp(10),dp(10),dp(10),dp(10)
 						line_color_normal:0,0,0,0
 						line_color_focus:0,0,0,0
-						hint_text:"Enter the port"
+						hint_text:"Enter the port (Eg :9876)"
 						font_name_hint_text:"assets/Poppins-Regular.ttf"
 						active_line:False
 						font_name:"assets/Poppins-Regular.ttf"
+						fill_color_normal:0,0,0,.5
+						fill_color_focus:app.theme_cls.bg_light
 				MDFlatButton:
 					pos_hint:{"center_x":0.5,"center_y":0.2}
 					radius:dp(10)
 					text:"Start"
 					md_bg_color:app.theme_cls.primary_color
 					font_name:"assets/Poppins-Regular.ttf"
-					#on_press:app.start_server(test_text_feild.text) if len(test_text_feild.text) > 3 and type(int(test_text_feild.text)) = int else print("Invalid ") 
+					on_press:app.start_server(test_text_feild)

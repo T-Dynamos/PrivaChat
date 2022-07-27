@@ -5,7 +5,9 @@ from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDLabel
 from kivymd.uix.relativelayout import *
+from kivymd.toast import toast as Toast2
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import platform
@@ -34,6 +36,16 @@ class PersonText(MDRelativeLayout):
 class HoverLayout(MDCard,HoverBehavior):
     pass
 
+
+def Toast1(string,*largs):
+    Toast2(string)
+
+def Toast(string,*largs):
+    if platform=="android":
+        Toast2(string,gravity=80)
+    else:
+        Clock.schedule_once(partial(Toast1,string))
+
 class PrivaChat(MDApp):
 
     __version__ = __version__
@@ -49,8 +61,10 @@ class PrivaChat(MDApp):
     settings_view = None
     chat = None
     chat_img = ""
+    server_running = False
 
     ChatText = ChatText
+    Toast = Toast
 
     def build(self):
         self.chat_img = "/usr/share/backgrounds/hack.jpg"
@@ -64,7 +78,7 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         if platform != "android":
-            Window.size = [dp(400),dp(600)]
+            Window.size = [dp(400),dp(680)]
         Clock.schedule_once(self.load_files)
 
     def load_files(self,*largs):
@@ -152,16 +166,16 @@ class PrivaChat(MDApp):
     def change_size_keyboard(self,instance):
         if platform == "android":
             from kvdroid.tools import keyboard_height
-            if instance.size[-1] != self.y-keyboard_height:
+            if instance.size[-1] != self.y-keyboard_height():
                 anim = Animation(
-                    size=[self.x,self.y-keyboard_height],
-                    d="0.2"
+                    size=[self.x,self.y-keyboard_height()],
+                    d=0.2
                     )
                 anim.start(instance)
             else:
                 anim = Animation(
                     size=[self.x,self.y],
-                    d="0.2"
+                    d=0.2
                     )
                 anim.start(instance)
         else:
@@ -176,11 +190,41 @@ class PrivaChat(MDApp):
             view.scroll_to(instance)
             instance.text = " "
 
+    def add_server_log(self,log):
+        def add(*largs):
+            label = Builder.load_string(f"""
+MDLabel:
+    size_hint:None,None
+    size:app.x-dp(40),dp(20)
+    text:"{log}"
+    font_name:"assets/SourceCodePro-Regular.otf"
+                """)
+
+            self.main_screen.ids.server_loger.add_widget(label)
+        Clock.schedule_once(add)
+
     def start_server(self,port):
         try:
-            appServer.start_server(port)
+            self.main_screen.ids.server_card.opacity  = 1
+            _thread.start_new_thread(appServer.start_server,(int(port.text),self.add_server_log,self.stop_server))
+            self.server_view.dismiss()
+            self.server_running = True
+            self.animate_icon(self.main_screen.ids.server_icon,"close")
+            self.main_screen.ids.server_text.text  = "Stop server"
+            Toast("Server started successfully")
         except Exception as e:
-            print(str(e))
+            Toast("Unable to start server :"+str(e))
+            self.server_view.dismiss()
+            port.text = ""
+
+    def stop_server(self):
+        appServer.stop_server()
+        Toast("Server stoped successfully")
+        self.animate_icon(self.main_screen.ids.server_icon,"plus")
+        self.main_screen.ids.server_text.text  = "Start a server"
+        self.server_running = False
+        self.main_screen.ids.server_card.opacity  = 0
+        self.server_view.ids.test_text_feild.text = ""
 
 
 

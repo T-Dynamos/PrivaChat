@@ -36,8 +36,10 @@ ModalView:
 	AnchorLayout:
 		anchor_y:"top"
 		MDRelativeLayout:
+			size_hint:None,None 
+			size:app.x,app.y
 			id:main_handler
-			md_bg_color:app.theme_cls.bg_darkest
+			md_bg_color:app.theme_cls.bg_light
 			FitImage:
 				source:app.chat_img
 			AnchorLayout:
