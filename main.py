@@ -15,6 +15,7 @@ from functools import partial
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.uix.modalview import ModalView
+from datetime import datetime
 from kivy.uix.screenmanager import *
 import socket 
 import os
@@ -38,7 +39,7 @@ class HoverLayout(MDCard,HoverBehavior):
 
 
 def Toast1(string,*largs):
-    Toast2(string)
+    Toast2(str(string))
 
 def Toast(string,*largs):
     if platform=="android":
@@ -66,6 +67,11 @@ class PrivaChat(MDApp):
     ChatText = ChatText
     Toast = Toast
 
+    date = lambda self: datetime.now().strftime("%H:%M:%S")
+    nickname = ""
+    chat_length = 40
+    client = None 
+
     def build(self):
         self.chat_img = "/usr/share/backgrounds/hack.jpg"
         self.theme_cls.accent_palette = "Orange"
@@ -78,7 +84,7 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         if platform != "android":
-            Window.size = [dp(400),dp(680)]
+            Window.size = [dp(400),dp(600)]
         Clock.schedule_once(self.load_files)
 
     def load_files(self,*largs):
@@ -181,14 +187,30 @@ class PrivaChat(MDApp):
         else:
             pass
 
+    def connect_client(self,addr,nickname,*largs):
+        self.nickname = nickname
+        send_message = lambda : Clock.schedule_once(self.handle_chat)
+        recieve_message = lambda  msg,nickname : Clock.schedule_once(partial(self.handle_msg,msg,nickname))
+        self.client = appServer.handle_client(nickname,send_message,recieve_message,int(addr.split(":")[-1]),addr.split(":")[0],print)
+        _thread.start_new_thread(self.client[-1],())
+        self.chat.open()
 
-    def handle_chat(self,instance,grid,view):
-        if instance.text != len(instance.text)*" ":
+    def handle_chat(self,*largs):
+        if self.chat.ids.text_feild.text != len(self.chat.ids.text_feild.text)*" " and len(self.chat.ids.text_feild.text) < self.chat_length:
             widget = ChatText()
-            widget.text = instance.text
-            grid(widget)
-            view.scroll_to(instance)
-            instance.text = " "
+            widget.text = self.chat.ids.text_feild.text
+            instance = self.chat.ids.chat_handler.add_widget(widget)
+            self.chat.ids.view.scroll_to(widget)
+            self.chat.ids.text_feild.text = " "
+            return True
+
+    def handle_msg(self,msg,nickname,*largs):
+        print(msg,nickname)
+        widget = PersonText()
+        widget.text = msg
+        widget.nickname  = nickname
+        self.chat.ids.chat_handler.add_widget(widget)
+        self.chat.ids.view.scroll_to(widget)
 
     def add_server_log(self,log):
         def add(*largs):

@@ -22,9 +22,41 @@ ModalView:
 							font_name:"assets/Poppins-Medium.ttf"
 							halign:"center"
 				MDFlatButton:
-					pos_hint:{"center_x":0.5,"center_y":0.2}
+					pos_hint:{"center_x":0.5,"center_y":0.15}
 					radius:dp(10)
 					text:"Connect"
 					md_bg_color:app.theme_cls.accent_color
 					font_name:"assets/Poppins-Regular.ttf"
-					on_press:app.chat.open()
+					on_press:app.connect_client(aadr_text_feild.text,nickname_text_feild.text)
+				BoxLayout:
+					pos_hint:{"center_x":0.5,"center_y":0.38}
+					size_hint:None,None 
+					size:app.x-dp(60),dp(50)
+					MDTextField:
+						id:aadr_text_feild
+						mode:"fill"
+						radius:dp(10),dp(10),dp(10),dp(10)
+						line_color_normal:0,0,0,0
+						line_color_focus:0,0,0,0
+						hint_text:"Enter address (eg : 127.0.0.1:9876)"
+						font_name_hint_text:"assets/Poppins-Regular.ttf"
+						active_line:False
+						font_name:"assets/Poppins-Regular.ttf"
+						fill_color_normal:0,0,0,.5
+						fill_color_focus:app.theme_cls.bg_light
+				BoxLayout:
+					pos_hint:{"center_x":0.5,"center_y":0.63}
+					size_hint:None,None 
+					size:app.x-dp(60),dp(50)
+					MDTextField:
+						id:nickname_text_feild
+						mode:"fill"
+						radius:dp(10),dp(10),dp(10),dp(10)
+						line_color_normal:0,0,0,0
+						line_color_focus:0,0,0,0
+						hint_text:"Enter your nickname"
+						font_name_hint_text:"assets/Poppins-Regular.ttf"
+						active_line:False
+						font_name:"assets/Poppins-Regular.ttf"
+						fill_color_normal:0,0,0,.5
+						fill_color_focus:app.theme_cls.bg_light					
