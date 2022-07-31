@@ -72,7 +72,7 @@ ModalView:
 				md_bg_color:0,0,0,0
 				ScrollView:
 					size_hint:None,None 
-					size:app.x,app.y-dp(70)
+					size:app.x,app.y-dp(80)
 					id:view
 					scroll_type:["bars", "content"]
 					MDGridLayout:
@@ -80,31 +80,34 @@ ModalView:
 						adaptive_height:True
 						cols:1
 						spacing:dp(10)
+			AnchorLayout:
+				anchor_y:"bottom"
 
-			MDCard:
-				size_hint:None,None 
-				size:app.x-dp(90),dp(40)
-				pos_hint:{"center_x":0.43,"center_y":0.07}
-				md_bg_color:app.theme_cls.bg_light
-				radius:dp(10)
-				MDTextField:
-					id:text_feild
-					hint_text:"Enter the message"
-					font_name_hint_text:"assets/Poppins-Regular.ttf"
-					mode:"fill"
-					max_text_length:app.chat_length
-					radius:dp(10),dp(10),dp(10),dp(10)
-					line_color_normal:0,0,0,0
-					line_color_focus:0,0,0,0
-					active_line:False
-					font_name:"assets/Poppins-Regular.ttf"
-					on_focus:app.change_size_keyboard(main_handler)
-					keyboard_suggestions:True
-					on_text_validate:app.client[0](text_feild.text)
+				RelativeLayout:
+					size_hint:None,None 
+					size:app.x,dp(70)
+					BoxLayout:
+						pos_hint:{"center_x":0.43,"center_y":0.52}
+						size_hint:None,None 
+						size:app.x-dp(80),dp(40)
+						MDTextField:
+							id:text_feild
+							hint_text:"Enter the message"
+							font_name_hint_text:"assets/Poppins-Regular.ttf"
+							mode:"fill"
+							max_text_length:app.chat_length
+							radius:dp(10),dp(10),dp(10),dp(10)
+							line_color_normal:0,0,0,0
+							line_color_focus:0,0,0,0
+							active_line:False
+							font_name:"assets/Poppins-Regular.ttf"
+							on_focus:app.change_size_keyboard(main_handler)
+							keyboard_suggestions:True
+							on_text_validate:app.client[0](text_feild.text)
 
 
-			MDIconButton:
-				pos_hint:{"center_x":0.9,"center_y":0.075}
-				md_bg_color:app.theme_cls.primary_color
-				icon:"send"
-				on_press:app.client[0](text_feild.text)
+					MDIconButton:
+						pos_hint:{"center_x":0.9,"center_y":0.62}
+						md_bg_color:app.theme_cls.primary_color
+						icon:"send"
+						on_press:app.client[0](text_feild.text)

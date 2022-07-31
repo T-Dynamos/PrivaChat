@@ -124,7 +124,7 @@ MDScreen:
 				md_bg_color:app.theme_cls.primary_dark
 				size_hint:None,None 
 				size:control.width//2-dp(10),dp(40)    
-				radius:dp(10)
+				radius:[dp(10),0,0,dp(10)]
 
 			MDBoxLayout:
 				AnchorLayout:
@@ -133,6 +133,7 @@ MDScreen:
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
 						size:control.width//2-dp(10),dp(40)
+						radius:[dp(10),0,0,dp(10)]
 						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.primary_dark,radius=[dp(10),0,0,dp(10)]);tab_manager.transition.direction = "right";tab_manager.current = "chat"
 						MDLabel:
 							text:"Chat"
@@ -144,6 +145,7 @@ MDScreen:
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
 						size:control.width//2-dp(10),dp(40)
+						radius:[0,dp(10),dp(10),0]
 						on_press:app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_color,radius=[0,dp(10),dp(10),0]);tab_manager.transition.direction = "left";tab_manager.current = "server"
 
 						MDLabel:
