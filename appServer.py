@@ -67,6 +67,8 @@ def handle_client(	nickname,
 		while True:
 			print("Connection started")
 			message = client.recv(1024).decode('ascii')
+			if message is None or message == "":
+				shutedown()
 			if message == "NICK":
 				client.send(nickname.encode('ascii'))
 			else:

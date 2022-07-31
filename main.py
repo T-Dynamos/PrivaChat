@@ -3,7 +3,8 @@ from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
 from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import *
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
 from kivymd.uix.relativelayout import *
@@ -63,6 +64,7 @@ class PrivaChat(MDApp):
     chat = None
     chat_img = ""
     server_running = False
+    dialog = MDDialog
 
     ChatText = ChatText
     Toast = Toast
@@ -70,7 +72,10 @@ class PrivaChat(MDApp):
     date = lambda self: datetime.now().strftime("%H:%M:%S")
     nickname = ""
     chat_length = 40
-    client = None 
+
+    title = "PrivaChat (Running)"
+    icon = "splash.png"
+
 
     def build(self):
         self.chat_img = "/usr/share/backgrounds/hack.jpg"
@@ -85,14 +90,14 @@ class PrivaChat(MDApp):
     def on_start(self):
         if platform != "android":
             Window.size = [dp(400),dp(600)]
-        Clock.schedule_once(self.load_files)
+        Clock.schedule_once(self.load_files,2)
 
     def load_files(self,*largs):
         self.main_screen = Builder.load_file("main.kv")
         self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
-        self.chat = Builder.load_file("kvfiles/chat.kv")        
+        self.chat = Builder.load_file("kvfiles/chat.kv")  
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"
@@ -122,10 +127,11 @@ class PrivaChat(MDApp):
         anim2.bind(on_complete=change_icon)
 
 
-    def animate_pos_hint(self,instance,pos_hint,md_bg_color=None):
+    def animate_pos_hint(self,instance,pos_hint,md_bg_color=None,radius=None):
         anim = Animation(
             md_bg_color=md_bg_color,
             pos_hint=pos_hint,
+            radius=radius,
             d= 0.3
             )
         anim.start(instance)
@@ -179,7 +185,7 @@ class PrivaChat(MDApp):
                     )
                 anim.start(instance)
             else:
-                anim = Animation(
+                anim = Anibmation(
                     size=[self.x,self.y],
                     d=0.2
                     )
@@ -240,13 +246,32 @@ MDLabel:
             port.text = ""
 
     def stop_server(self):
-        appServer.stop_server()
-        Toast("Server stoped successfully")
-        self.animate_icon(self.main_screen.ids.server_icon,"plus")
-        self.main_screen.ids.server_text.text  = "Start a server"
-        self.server_running = False
-        self.main_screen.ids.server_card.opacity  = 0
-        self.server_view.ids.test_text_feild.text = ""
+        self.dialog = MDDialog(
+            title="Stop Server?",
+            text="Stopping a server requires a restart.",
+            radius=dp(20),
+            buttons=[
+                MDFlatButton(
+                    text="Cancel",
+                    theme_text_color="Custom",
+                    text_color=self.theme_cls.primary_color,
+                    on_press=self.dialog.dismiss
+                        ),  
+                MDFlatButton(
+                    text="Restart Now",
+                    theme_text_color="Custom",
+                    text_color=self.theme_cls.primary_color,
+                    on_press=self.stop
+                        ),
+                    ],
+            )
+        self.dialog.open()
+
+        #self.animate_icon(self.main_screen.ids.server_icon,"plus")
+        #self.main_screen.ids.server_text.text  = "Start a server"
+        #self.server_running = False
+        #self.main_screen.ids.server_card.opacity  = 0
+        #self.server_view.ids.test_text_feild.text = ""
 
 
 
