@@ -28,7 +28,12 @@ import appServer
 __version__ = "1.0"
 
 if platform != "android":
+    Config.set("graphics","height","400")
+    Config.set("graphics","width","600")
+    Config.set("graphics","fps","120")
     Window.size = [dp(400),dp(600)]
+
+Config.set("kivy","exit_on_escape","0")
 
 class IconButton(MDIconButton,RotateWidget):
     pass
@@ -80,7 +85,7 @@ class PrivaChat(MDApp):
     title = "PrivaChat (Running)"
     icon = "splash.png"
 
-    back_key = 27 if platform != "android" else 1001
+    back_key = 27
 
     def read_settings(self):
         import setting
@@ -111,25 +116,43 @@ class PrivaChat(MDApp):
             if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x":0.5,"center_y":0.5}:
                 self.open_drawer()
             else:
-                self.dialog = MDDialog(
-                    title="Stop Server?",
-                    text="Stopping a server requires a restart.",
-                    radius=dp(20),
-                    buttons=[
-                        MDFlatButton(
-                            text="Cancel",
-                            theme_text_color="Custom",
-                            text_color=self.theme_cls.primary_color,
-                            on_press=self.stop()
-                                ),  
-                        MDFlatButton(
-                            text="Restart Now",
-                            theme_text_color="Custom",
-                            text_color=self.theme_cls.primary_color,
-                            on_press=self.stop()
-                                ),
-                            ],
-                    )
+                self.dialog = Builder.load_string("""
+ModalView:
+    on_open:app.open_modal(self)
+    on_dismiss:app.close_modal(self)
+    background_color: (0,0,0,0.3)
+    opacity:0
+    RelativeLayout:
+        MDCard:
+            pos_hint:{"center_x":0.5,"center_y":0.5}
+            size_hint: (None, None)
+            size:app.x()-dp(80),dp(180)
+            radius:dp(20)
+            RelativeLayout:
+                MDLabel:
+                    text:"Do you want to exit?"
+                    font_name:"assets/Poppins-Medium.ttf"
+                    halign:"center"
+                MDFlatButton:
+                    pos_hint:{"center_x":0.6,"center_y":0.2}
+                    text:"Cancel"
+                    font_name:"assets/Poppins-Regular.ttf"
+                    radius:dp(10)
+                    theme_text_color:"Custom"
+                    text_color:app.theme_cls.primary_color
+                    on_press:root.dismiss()
+                MDFlatButton:
+                    pos_hint:{"center_x":0.8,"center_y":0.2}
+                    text:"Exit"
+                    font_name:"assets/Poppins-Regular.ttf"
+                    radius:dp(10)
+                    radius:dp(10)
+                    theme_text_color:"Custom"
+                    text_color:app.theme_cls.primary_color
+                    on_press:app.stop()
+
+
+                """)
                 self.dialog.open()
 
     def load_files(self,*largs):
