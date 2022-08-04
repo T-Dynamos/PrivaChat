@@ -7,7 +7,7 @@ ModalView:
 		MDCard:
 			pos_hint:{"center_x":0.5,"center_y":0.7}
 			size_hint: (None, None)
-			size:app.x-dp(40),dp(250)
+			size:app.x()-dp(40),dp(250)
 			radius:dp(20)
 			RelativeLayout:
 				AnchorLayout:
@@ -15,7 +15,7 @@ ModalView:
 					MDCard:
 						size_hint:None,None 
 						radius:dp(20),dp(20),0,0
-						size:app.x-dp(40),dp(50)
+						size:app.x()-dp(40),dp(50)
 						md_bg_color:app.theme_cls.primary_color
 						MDLabel:
 							text:"Enter the server details"
@@ -31,7 +31,7 @@ ModalView:
 				BoxLayout:
 					pos_hint:{"center_x":0.5,"center_y":0.38}
 					size_hint:None,None 
-					size:app.x-dp(60),dp(50)
+					size:app.x()-dp(60),dp(50)
 					MDTextField:
 						id:aadr_text_feild
 						mode:"fill"
@@ -47,7 +47,7 @@ ModalView:
 				BoxLayout:
 					pos_hint:{"center_x":0.5,"center_y":0.63}
 					size_hint:None,None 
-					size:app.x-dp(60),dp(50)
+					size:app.x()-dp(60),dp(50)
 					MDTextField:
 						id:nickname_text_feild
 						mode:"fill"

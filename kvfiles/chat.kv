@@ -3,15 +3,15 @@
 	text:""
 	nickname:app.nickname
 	size_hint:None,None 
-	size:app.x,dp(70)
+	size:app.x(),dp(70)
 	AnchorLayout:
 		anchor_x:"right"
 		size_hint:None,None 
-		size:app.x,dp(70)
+		size:app.x(),dp(70)
 		MDCard:
 			radius:dp(10),0,0,dp(10)
 			size_hint:None,None 
-			size:app.x-dp(70),dp(70)
+			size:app.x()-dp(70),dp(70)
 			padding:dp(10) 
 			orientation:"vertical"
 			md_bg_color:app.theme_cls.primary_color
@@ -30,15 +30,15 @@
 	text:""
 	nickname:''
 	size_hint:None,None 
-	size:app.x,dp(70)
+	size:app.x(),dp(70)
 	AnchorLayout:
 		anchor_x:"left"
 		size_hint:None,None 
-		size:app.x,dp(70)
+		size:app.x(),dp(70)
 		MDCard:
 			radius:0,dp(10),dp(10),0
 			size_hint:None,None 
-			size:app.x-dp(70),dp(70)
+			size:app.x()-dp(70),dp(70)
 			padding:dp(10) 
 			orientation:"vertical"
 			md_bg_color:app.theme_cls.accent_color
@@ -62,7 +62,7 @@ ModalView:
 		anchor_y:"top"
 		MDRelativeLayout:
 			size_hint:None,None 
-			size:app.x,app.y
+			size:app.x(),app.y()
 			id:main_handler
 			md_bg_color:app.theme_cls.bg_light
 			FitImage:
@@ -72,7 +72,7 @@ ModalView:
 				md_bg_color:0,0,0,0
 				ScrollView:
 					size_hint:None,None 
-					size:app.x,app.y-dp(80)
+					size:app.x(),app.y()-dp(80)
 					id:view
 					scroll_type:["bars", "content"]
 					MDGridLayout:
@@ -85,11 +85,11 @@ ModalView:
 
 				RelativeLayout:
 					size_hint:None,None 
-					size:app.x,dp(70)
+					size:app.x(),dp(70)
 					BoxLayout:
 						pos_hint:{"center_x":0.43,"center_y":0.52}
 						size_hint:None,None 
-						size:app.x-dp(80),dp(40)
+						size:app.x()-dp(80),dp(40)
 						MDTextField:
 							id:text_feild
 							hint_text:"Enter the message"

@@ -1,7 +1,9 @@
 <ListSwitch@MDBoxLayout>:
 	text:""
+	active:False
+	s_press:print
 	size_hint:None,None 
-	size:app.x,dp(50)
+	size:app.x(),dp(50)
 	padding:dp(10)
 	RelativeLayout:
 		MDLabel:
@@ -10,10 +12,12 @@
 			font_size:"15sp"
 		MDSwitch:
 			pos_hint:{"center_x":0.8,"center_y":0.3}
+			active:root.active
+			on_active:root.s_press(self)
 <ListIcon@MDBoxLayout>:
 	text:""
 	size_hint:None,None 
-	size:app.x,dp(50)
+	size:app.x(),dp(50)
 	padding:dp(10)
 	RelativeLayout:
 		MDLabel:
@@ -37,13 +41,15 @@ ModalView:
 			font_size:"35sp"
 		MDCard:
 			size_hint:None,None
-			size:app.x,dp(300)
+			size:app.x(),dp(300)
 			pos_hint:{"center_x":0.5,"center_y":0.8}
 			md_bg_color:0,0,0,0
 			orientation: 'vertical'
 			padding:dp(10)
 			ListSwitch:
 				text:"Dark mode"
+				active:app.read_settings()[0] 
+				s_press:app.set_mode
 			ListSwitch:
 				text:"Save chats"
 			MDSeparator:

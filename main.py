@@ -16,6 +16,7 @@ from functools import partial
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.uix.modalview import ModalView
+from kivy.config import Config
 from datetime import datetime
 from kivy.uix.screenmanager import *
 import socket 
@@ -25,6 +26,9 @@ import _thread
 import appServer
 
 __version__ = "1.0"
+
+if platform != "android":
+    Window.size = [dp(400),dp(600)]
 
 class IconButton(MDIconButton,RotateWidget):
     pass
@@ -52,8 +56,8 @@ class PrivaChat(MDApp):
 
     __version__ = __version__
     
-    x = Window.size[0]
-    y = Window.size[1]
+    x = lambda self : Window.size[0]
+    y = lambda self : Window.size[1]
 
     screen_manager = ScreenManager()
 
@@ -76,21 +80,57 @@ class PrivaChat(MDApp):
     title = "PrivaChat (Running)"
     icon = "splash.png"
 
+    back_key = 27 if platform != "android" else 1001
+
+    def read_settings(self):
+        import setting
+        return [setting.dark_mode, setting.save_chats]
 
     def build(self):
         self.chat_img = "/usr/share/backgrounds/hack.jpg"
         self.theme_cls.accent_palette = "Orange"
-        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
         self.screen_manager.current = "splash"
         return self.screen_manager
 
+    def set_mode(self,instance):
+        if instance.active == True:
+            self.theme_cls.them_style = "Dark"
+        else:
+            self.theme_cls.them_style = "Light"
 
     def on_start(self):
-        if platform != "android":
-            Window.size = [dp(400),dp(600)]
+        Window.bind(on_keyboard=self.handle_keys)
         Clock.schedule_once(self.load_files,2)
+
+    def handle_keys(self,*largs):
+        key = largs[-4]
+        if key == self.back_key:
+            if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x":0.5,"center_y":0.5}:
+                self.open_drawer()
+            else:
+                self.dialog = MDDialog(
+                    title="Stop Server?",
+                    text="Stopping a server requires a restart.",
+                    radius=dp(20),
+                    buttons=[
+                        MDFlatButton(
+                            text="Cancel",
+                            theme_text_color="Custom",
+                            text_color=self.theme_cls.primary_color,
+                            on_press=self.stop()
+                                ),  
+                        MDFlatButton(
+                            text="Restart Now",
+                            theme_text_color="Custom",
+                            text_color=self.theme_cls.primary_color,
+                            on_press=self.stop()
+                                ),
+                            ],
+                    )
+                self.dialog.open()
 
     def load_files(self,*largs):
         self.main_screen = Builder.load_file("main.kv")
@@ -158,11 +198,11 @@ class PrivaChat(MDApp):
     def open_drawer(self,*largs):
         animation_open = Animation(
                 pos_hint={"center_x":0.5,"center_y":0.5},
-                d=0.2
+                d=0.3
                )
         animation_close = Animation(
                 pos_hint={"center_x":-0.5,"center_y":0.5},
-                d=0.2
+                d=0.3
                 )
         if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x":-0.5,"center_y":0.5}:
             animation_open.start(self.screen_manager.get_screen("main").ids.drawer) 
@@ -178,15 +218,16 @@ class PrivaChat(MDApp):
     def change_size_keyboard(self,instance):
         if platform == "android":
             from kvdroid.tools import keyboard_height
-            if instance.size[-1] != self.y-keyboard_height():
+            keyboard_height = dp(300)
+            if instance.size[-1] != self.y()-keyboard_height():
                 anim = Animation(
-                    size=[self.x,self.y-keyboard_height()],
+                    size=[self.x(),self.y()-keyboard_height()],
                     d=0.2
                     )
                 anim.start(instance)
             else:
                 anim = Anibmation(
-                    size=[self.x,self.y],
+                    size=[self.x(),self.y()],
                     d=0.2
                     )
                 anim.start(instance)
