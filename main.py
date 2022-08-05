@@ -241,7 +241,7 @@ ModalView:
     def change_size_keyboard(self,instance):
         if platform == "android":
             from kvdroid.tools import keyboard_height
-            keyboard_height = dp(300)
+            keyboard_height = lambda : dp(300)
             if instance.size[-1] != self.y()-keyboard_height():
                 anim = Animation(
                     size=[self.x(),self.y()-keyboard_height()],
@@ -249,7 +249,7 @@ ModalView:
                     )
                 anim.start(instance)
             else:
-                anim = Anibmation(
+                anim = Animation(
                     size=[self.x(),self.y()],
                     d=0.2
                     )
@@ -258,6 +258,7 @@ ModalView:
             pass
 
     def connect_client(self,addr,nickname,*largs):
+        self.chat = Builder.load_file("kvfiles/chat.kv")
         self.nickname = nickname
         send_message = lambda : Clock.schedule_once(self.handle_chat)
         recieve_message = lambda  msg,nickname : Clock.schedule_once(partial(self.handle_msg,msg,nickname))
@@ -287,7 +288,7 @@ ModalView:
             label = Builder.load_string(f"""
 MDLabel:
     size_hint:None,None
-    size:app.x-dp(40),dp(20)
+    size:app.x()-dp(40),dp(20)
     text:"{log}"
     font_name:"assets/SourceCodePro-Regular.otf"
                 """)
