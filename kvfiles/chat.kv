@@ -72,7 +72,7 @@ ModalView:
 				md_bg_color:0,0,0,0
 				ScrollView:
 					size_hint:None,None 
-					size:app.x(),app.y()-dp(80)
+					size:main_handler.width,main_handler.height
 					id:view
 					scroll_type:["bars", "content"]
 					MDGridLayout:
@@ -85,7 +85,7 @@ ModalView:
 
 				RelativeLayout:
 					size_hint:None,None 
-					size:app.x(),dp(70)
+					size:main_handler.width,dp(70)
 					BoxLayout:
 						pos_hint:{"center_x":0.43,"center_y":0.52}
 						size_hint:None,None 
