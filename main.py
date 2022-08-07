@@ -5,9 +5,7 @@ from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import *
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.label import MDLabel
-from kivymd.uix.relativelayout import *
+from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.toast import toast as Toast2
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -15,54 +13,55 @@ from kivy.utils import platform
 from functools import partial
 from kivy.clock import Clock
 from kivy.animation import Animation
-from kivy.uix.modalview import ModalView
 from kivy.config import Config
 from datetime import datetime
 from kivy.uix.screenmanager import *
-import socket 
-import os
-import select
 import _thread
 import appServer
 
 __version__ = "1.0"
 
 if platform != "android":
-    Config.set("graphics","height","400")
-    Config.set("graphics","width","600")
-    Config.set("graphics","fps","120")
-    Window.size = [dp(400),dp(600)]
+    Config.set("graphics", "height", "400")
+    Config.set("graphics", "width", "600")
+    Config.set("graphics", "fps", "120")
+    Window.size = [dp(400), dp(600)]
 
-Config.set("kivy","exit_on_escape","0")
+Config.set("kivy", "exit_on_escape", "0")
 
-class IconButton(MDIconButton,RotateWidget):
-    pass
 
-class ChatText(MDRelativeLayout):
-    pass
-
-class PersonText(MDRelativeLayout):
-    pass
-
-class HoverLayout(MDCard,HoverBehavior):
+class IconButton(MDIconButton, RotateWidget):
     pass
 
 
-def Toast1(string,*largs):
+class ChatText(AnchorLayout):
+    pass
+
+
+class PersonText(AnchorLayout):
+    pass
+
+
+class HoverLayout(MDCard, HoverBehavior):
+    pass
+
+
+def Toast1(string, *largs):
     Toast2(str(string))
 
-def Toast(string,*largs):
-    if platform=="android":
-        Toast2(string,gravity=80)
+
+def Toast(string, *largs):
+    if platform == "android":
+        Toast2(string, gravity=80)
     else:
-        Clock.schedule_once(partial(Toast1,string))
+        Clock.schedule_once(partial(Toast1, string))
+
 
 class PrivaChat(MDApp):
-
     __version__ = __version__
-    
-    x = lambda self : Window.size[0]
-    y = lambda self : Window.size[1]
+
+    x = lambda self: Window.size[0]
+    y = lambda self: Window.size[1]
 
     screen_manager = ScreenManager()
 
@@ -89,10 +88,10 @@ class PrivaChat(MDApp):
 
     def read_settings(self):
         import setting
-        return [setting.dark_mode, setting.save_chats]
+        return [setting.dark_mode, setting.save_chats, setting.wallpaper]
 
     def build(self):
-        self.chat_img = "/usr/share/backgrounds/hack.jpg"
+        self.chat_img = self.read_settings()[-1]
         self.theme_cls.accent_palette = "Orange"
         self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
         self.theme_cls.material_style = "M3"
@@ -100,7 +99,7 @@ class PrivaChat(MDApp):
         self.screen_manager.current = "splash"
         return self.screen_manager
 
-    def set_mode(self,instance):
+    def set_mode(self, instance):
         if instance.active == True:
             self.theme_cls.them_style = "Dark"
         else:
@@ -108,80 +107,49 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         Window.bind(on_keyboard=self.handle_keys)
-        Clock.schedule_once(self.load_files,2)
+        Clock.schedule_once(self.load_files, 2)
 
-    def handle_keys(self,*largs):
+    def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None):
+        self.dialog = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[0])
+        self.dialog.ids.cb.text = ctext
+        self.dialog.ids.fb.text = ftext
+        self.dialog.ids.la.text = message
+        self.dialog.ids.fb.on_press = on_ok_press
+        return self.dialog
+
+    def handle_keys(self, *largs):
         key = largs[-4]
         if key == self.back_key:
-            if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x":0.5,"center_y":0.5}:
+            if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x": 0.5, "center_y": 0.5}:
                 self.open_drawer()
             else:
-                self.dialog = Builder.load_string("""
-ModalView:
-    on_open:app.open_modal(self)
-    on_dismiss:app.close_modal(self)
-    background_color: (0,0,0,0.3)
-    opacity:0
-    RelativeLayout:
-        MDCard:
-            pos_hint:{"center_x":0.5,"center_y":0.5}
-            size_hint: (None, None)
-            size:app.x()-dp(80),dp(180)
-            radius:dp(20)
-            RelativeLayout:
-                MDLabel:
-                    text:"Do you want to exit?"
-                    font_name:"assets/Poppins-Medium.ttf"
-                    halign:"center"
-                MDFlatButton:
-                    pos_hint:{"center_x":0.6,"center_y":0.2}
-                    text:"Cancel"
-                    font_name:"assets/Poppins-Regular.ttf"
-                    radius:dp(10)
-                    theme_text_color:"Custom"
-                    text_color:app.theme_cls.primary_color
-                    on_press:root.dismiss()
-                MDFlatButton:
-                    pos_hint:{"center_x":0.8,"center_y":0.2}
-                    text:"Exit"
-                    font_name:"assets/Poppins-Regular.ttf"
-                    radius:dp(10)
-                    radius:dp(10)
-                    theme_text_color:"Custom"
-                    text_color:app.theme_cls.primary_color
-                    on_press:app.stop()
+                self.dialog_constructor("Do you want to exit?", "Cancel", "Exit", self.stop).open()
 
-
-                """)
-                self.dialog.open()
-
-    def load_files(self,*largs):
+    def load_files(self, *largs):
         self.main_screen = Builder.load_file("main.kv")
         self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
-        self.chat = Builder.load_file("kvfiles/chat.kv")  
+        self.chat = Builder.load_file("kvfiles/chat.kv")
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"
         self.screen_manager.transition = SlideTransition()
 
-
-    def animate_icon(self,instance,icon,*largs):
+    def animate_icon(self, instance, icon, *largs):
         anim = Animation(
-            rotate_value_angle=-360, 
+            rotate_value_angle=-360,
             d=0.3
-                )
+        )
 
         anim2 = Animation(
             opacity=0,
             d=0.4
-                )
+        )
         anim.start(instance)
 
         def change_icon(*largs):
-
-            instance.icon = icon 
+            instance.icon = icon
             instance.opacity = 1
             instance.rotate_value_angle = 1
             anim2.start(instance)
@@ -189,155 +157,136 @@ ModalView:
         anim2.start(instance)
         anim2.bind(on_complete=change_icon)
 
-
-    def animate_pos_hint(self,instance,pos_hint,md_bg_color=None,radius=None):
+    def animate_pos_hint(self, instance, pos_hint, md_bg_color=None, radius=None):
         anim = Animation(
             md_bg_color=md_bg_color,
             pos_hint=pos_hint,
             radius=radius,
-            d= 0.3
-            )
+            d=0.3
+        )
         anim.start(instance)
- 
-    def animate_md_bg_color(self,instance,md_bg_color=None):
+
+    def animate_md_bg_color(self, instance, md_bg_color=None):
         anim = Animation(
             md_bg_color=md_bg_color,
-            d= 0.3
-            )
+            d=0.3
+        )
         anim.start(instance)
 
-    def open_modal(self,instance):
-    	anim = Animation(
-                opacity=1,
-                d=0.3
-                ).start(instance)
+    def open_modal(self, instance):
+        anim = Animation(
+            opacity=1,
+            d=0.3
+        ).start(instance)
 
-    def close_modal(self,instance):
-    	anim = Animation(
-                opacity=0,
-                d=0.3
-                ).start(instance)
+    def close_modal(self, instance):
+        anim = Animation(
+            opacity=0,
+            d=0.3
+        ).start(instance)
 
-    def open_drawer(self,*largs):
+    def open_drawer(self, *largs):
         animation_open = Animation(
-                pos_hint={"center_x":0.5,"center_y":0.5},
-                d=0.3
-               )
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            d=0.3
+        )
         animation_close = Animation(
-                pos_hint={"center_x":-0.5,"center_y":0.5},
-                d=0.3
-                )
-        if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x":-0.5,"center_y":0.5}:
-            animation_open.start(self.screen_manager.get_screen("main").ids.drawer) 
+            pos_hint={"center_x": -0.5, "center_y": 0.5},
+            d=0.3
+        )
+        if self.screen_manager.get_screen("main").ids.drawer.pos_hint == {"center_x": -0.5, "center_y": 0.5}:
+            animation_open.start(self.screen_manager.get_screen("main").ids.drawer)
+
             def set_opacity(*largs):
-                self.screen_manager.get_screen("main").ids.drawer.md_bg_color = 0,0,0,.3
+                self.screen_manager.get_screen("main").ids.drawer.md_bg_color = 0, 0, 0, .3
 
             animation_open.bind(on_complete=set_opacity)
         else:
-            self.screen_manager.get_screen("main").ids.drawer.md_bg_color  = 0,0,0,0
+            self.screen_manager.get_screen("main").ids.drawer.md_bg_color = 0, 0, 0, 0
             animation_close.start(self.screen_manager.get_screen("main").ids.drawer)
-            Clock.schedule_once(partial(self.animate_icon,self.screen_manager.get_screen("main").ids.back_button,"menu" if self.icon == "arrow-left" else "menu" ),0.1)
+            Clock.schedule_once(partial(self.animate_icon, self.screen_manager.get_screen("main").ids.back_button,
+                                        "menu" if self.icon == "arrow-left" else "menu"), 0.1)
 
-    def change_size_keyboard(self,instance):
+    def change_size_keyboard(self, instance):
         if platform == "android":
             from kvdroid.tools import keyboard_height
-            keyboard_height = lambda : dp(300)
-            if instance.size[-1] != self.y()-keyboard_height():
+            keyboard_height = lambda: dp(300)
+            if instance.size[-1] != self.y() - keyboard_height():
                 anim = Animation(
-                    size=[self.x(),self.y()-keyboard_height()],
+                    size=[self.x(), self.y() - keyboard_height()],
                     d=0.2
-                    )
+                )
                 anim.start(instance)
             else:
                 anim = Animation(
-                    size=[self.x(),self.y()],
+                    size=[self.x(), self.y()],
                     d=0.2
-                    )
+                )
                 anim.start(instance)
         else:
             pass
 
-    def connect_client(self,addr,nickname,*largs):
+    def connect_client(self, addr, nickname, *largs):
         self.chat = Builder.load_file("kvfiles/chat.kv")
         self.nickname = nickname
-        send_message = lambda : Clock.schedule_once(self.handle_chat)
-        recieve_message = lambda  msg,nickname : Clock.schedule_once(partial(self.handle_msg,msg,nickname))
-        self.client = appServer.handle_client(nickname,send_message,recieve_message,int(addr.split(":")[-1]),addr.split(":")[0],print)
-        _thread.start_new_thread(self.client[-1],())
-        self.chat.open()
+        send_message = lambda: Clock.schedule_once(self.handle_chat)
+        recieve_message = lambda msg, nickname: Clock.schedule_once(partial(self.handle_msg, msg, nickname))
+        shutdown = lambda text: self.dialog_constructor("Error : " + text, "", "OK", self.dialog.dismiss).open()
+        try:
+            self.client = appServer.handle_client(nickname, send_message, recieve_message, int(addr.split(":")[-1]),addr.split(":")[0], shutdown)
+            _thread.start_new_thread(self.client[-1], ())
+            self.chat.open()
+        except Exception  as e:
+            shutdown(str(e))
 
-    def handle_chat(self,*largs):
-        if self.chat.ids.text_feild.text != len(self.chat.ids.text_feild.text)*" " and len(self.chat.ids.text_feild.text) < self.chat_length:
+    def handle_chat(self, *largs):
+        if self.chat.ids.text_feild.text != len(self.chat.ids.text_feild.text) * " " and len(
+                self.chat.ids.text_feild.text) < self.chat_length:
             widget = ChatText()
             widget.text = self.chat.ids.text_feild.text
-            instance = self.chat.ids.chat_handler.add_widget(widget)
+            self.chat.ids.chat_handler.add_widget(widget)
             self.chat.ids.view.scroll_to(widget)
             self.chat.ids.text_feild.text = " "
             return True
 
-    def handle_msg(self,msg,nickname,*largs):
-        print(msg,nickname)
+    def handle_msg(self, msg, nickname, *largs):
+        print(msg, nickname)
         widget = PersonText()
         widget.text = msg
-        widget.nickname  = nickname
+        widget.nickname = nickname
         self.chat.ids.chat_handler.add_widget(widget)
         self.chat.ids.view.scroll_to(widget)
 
-    def add_server_log(self,log):
+    def add_server_log(self, log):
         def add(*largs):
-            label = Builder.load_string(f"""
-MDLabel:
-    size_hint:None,None
-    size:app.x()-dp(40),dp(20)
-    text:"{log}"
-    font_name:"assets/SourceCodePro-Regular.otf"
-                """)
-
+            label = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[-1])
+            label.text = log
             self.main_screen.ids.server_loger.add_widget(label)
+
         Clock.schedule_once(add)
 
-    def start_server(self,port):
+    def start_server(self, port):
         try:
-            self.main_screen.ids.server_card.opacity  = 1
-            _thread.start_new_thread(appServer.start_server,(int(port.text),self.add_server_log,self.stop_server))
+            self.main_screen.ids.server_card.opacity = 1
+            _thread.start_new_thread(appServer.start_server, (int(port.text), self.add_server_log, self.stop_server))
             self.server_view.dismiss()
             self.server_running = True
-            self.animate_icon(self.main_screen.ids.server_icon,"close")
-            self.main_screen.ids.server_text.text  = "Stop server"
+            self.animate_icon(self.main_screen.ids.server_icon, "close")
+            self.main_screen.ids.server_text.text = "Stop server"
             Toast("Server started successfully")
         except Exception as e:
-            Toast("Unable to start server :"+str(e))
+            Toast("Unable to start server :" + str(e))
             self.server_view.dismiss()
             port.text = ""
 
     def stop_server(self):
-        self.dialog = MDDialog(
-            title="Stop Server?",
-            text="Stopping a server requires a restart.",
-            radius=dp(20),
-            buttons=[
-                MDFlatButton(
-                    text="Cancel",
-                    theme_text_color="Custom",
-                    text_color=self.theme_cls.primary_color,
-                    on_press=self.dialog.dismiss
-                        ),  
-                MDFlatButton(
-                    text="Restart Now",
-                    theme_text_color="Custom",
-                    text_color=self.theme_cls.primary_color,
-                    on_press=self.stop
-                        ),
-                    ],
-            )
-        self.dialog.open()
+        self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()
 
-        #self.animate_icon(self.main_screen.ids.server_icon,"plus")
-        #self.main_screen.ids.server_text.text  = "Start a server"
-        #self.server_running = False
-        #self.main_screen.ids.server_card.opacity  = 0
-        #self.server_view.ids.test_text_feild.text = ""
-
+        # self.animate_icon(self.main_screen.ids.server_icon,"plus")
+        # self.main_screen.ids.server_text.text  = "Start a server"
+        # self.server_running = False
+        # self.main_screen.ids.server_card.opacity  = 0
+        # self.server_view.ids.test_text_feild.text = ""
 
 
 PrivaChat().run()

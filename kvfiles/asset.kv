@@ -1,0 +1,44 @@
+ModalView:
+    on_open:app.open_modal(self)
+    on_dismiss:app.close_modal(self)
+    background_color: (0,0,0,0.3)
+    opacity:0
+    RelativeLayout:
+        MDCard:
+            pos_hint:{"center_x":0.5,"center_y":0.5}
+            size_hint: (None, None)
+            size:app.x()-dp(80),dp(180)
+            radius:dp(20)
+            RelativeLayout:
+                MDLabel:
+                    id:la
+                    text:"Do you want to exit?"
+                    font_name:"assets/Poppins-Medium.ttf"
+                    halign:"center"
+                MDFlatButton:
+                    id:cb
+                    pos_hint:{"center_x":0.5,"center_y":0.2}
+                    text:"Cancel"
+                    font_name:"assets/Poppins-Regular.ttf"
+                    radius:dp(10)
+                    theme_text_color:"Custom"
+                    text_color:app.theme_cls.primary_color
+                    on_press:root.dismiss()
+                MDFlatButton:
+                    id:fb
+                    pos_hint:{"center_x":0.8,"center_y":0.2}
+                    text:"Exit"
+                    font_name:"assets/Poppins-Regular.ttf"
+                    radius:dp(10)
+                    radius:dp(10)
+                    theme_text_color:"Custom"
+                    text_color:app.theme_cls.primary_color
+                    on_press:app.stop()
+
+~~~
+
+MDLabel:
+    size_hint:None,None
+    size:app.x()-dp(40),dp(20)
+    text:""
+    font_name:"assets/SourceCodePro-Regular.otf"

