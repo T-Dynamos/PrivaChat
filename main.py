@@ -222,8 +222,8 @@ class PrivaChat(MDApp):
 
     def change_size_keyboard(self, instance):
         if platform == "android":
-            from kvdroid.tools import keyboard_height
-            keyboard_height = lambda: dp(300)
+            from android import get_keyboard_height
+            keyboard_height = lambda: get_keyboard_height()
             if instance.size[-1] != self.y() - keyboard_height():
                 anim = Animation(
                     size=[self.x(), self.y() - keyboard_height()],
