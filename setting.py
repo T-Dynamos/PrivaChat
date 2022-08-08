@@ -1,4 +1,4 @@
-dark_mode = False
+dark_mode = True
 save_chats = False 
 wallpaper = "wallpapers/mountains.png"
 

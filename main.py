@@ -1,11 +1,12 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
+from kivymd.uix.label import MDLabel
 from kivymd.uix.card import MDCard
 from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import *
 from kivymd.uix.dialog import MDDialog
-from kivy.uix.anchorlayout import AnchorLayout
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.toast import toast as Toast2
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -34,11 +35,11 @@ class IconButton(MDIconButton, RotateWidget):
     pass
 
 
-class ChatText(AnchorLayout):
+class ChatText(MDRelativeLayout):
     pass
 
 
-class PersonText(AnchorLayout):
+class PersonText(MDRelativeLayout):
     pass
 
 
@@ -79,12 +80,20 @@ class PrivaChat(MDApp):
 
     date = lambda self: datetime.now().strftime("%H:%M:%S")
     nickname = ""
-    chat_length = 40
+    chat_length = 1000
+    text_size = None
 
     title = "PrivaChat (Running)"
     icon = "splash.png"
 
     back_key = 27
+
+    MDLabel = MDLabel
+
+    def ch_s(self,size):
+        print(size)
+        self.text_size = size
+
 
     def read_settings(self):
         import setting
@@ -106,15 +115,19 @@ class PrivaChat(MDApp):
             self.theme_cls.them_style = "Light"
 
     def on_start(self):
+        widget  = ChatText()
+        widget.text  = "A long text"*20
+        print(widget.ids)
         Window.bind(on_keyboard=self.handle_keys)
         Clock.schedule_once(self.load_files, 2)
 
-    def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None):
+    def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
         self.dialog = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[0])
         self.dialog.ids.cb.text = ctext
         self.dialog.ids.fb.text = ftext
         self.dialog.ids.la.text = message
-        self.dialog.ids.fb.on_press = on_ok_press
+        if close_on_ok == False:
+            self.dialog.ids.fb.on_press = on_ok_press 
         return self.dialog
 
     def handle_keys(self, *largs):
@@ -231,22 +244,31 @@ class PrivaChat(MDApp):
         self.nickname = nickname
         send_message = lambda: Clock.schedule_once(self.handle_chat)
         recieve_message = lambda msg, nickname: Clock.schedule_once(partial(self.handle_msg, msg, nickname))
-        shutdown = lambda text: self.dialog_constructor("Error : " + text, "", "OK", self.dialog.dismiss).open()
+        def shutdown(text):
+            self.dialog_constructor("Error : " + text, "", "OK", self.chat.dismiss, close_on_ok=True).open()
+        def close_view():
+            Clock.schedule_once(self.chat.dismiss)
         try:
-            self.client = appServer.handle_client(nickname, send_message, recieve_message, int(addr.split(":")[-1]),addr.split(":")[0], shutdown)
+            self.client = appServer.handle_client(nickname, send_message, recieve_message, int(addr.split(":")[-1]),addr.split(":")[0], shutdown, close_view)
             _thread.start_new_thread(self.client[-1], ())
             self.chat.open()
         except Exception  as e:
             shutdown(str(e))
+            close_view()
 
     def handle_chat(self, *largs):
         if self.chat.ids.text_feild.text != len(self.chat.ids.text_feild.text) * " " and len(
                 self.chat.ids.text_feild.text) < self.chat_length:
             widget = ChatText()
             widget.text = self.chat.ids.text_feild.text
-            self.chat.ids.chat_handler.add_widget(widget)
-            self.chat.ids.view.scroll_to(widget)
-            self.chat.ids.text_feild.text = " "
+            print(self.chat.ids.chat_handler.add_widget(widget))
+            def fix(*largs):
+                self.chat.ids.text_feild.text = " "
+                print("on func"+str(self.text_size))
+                widget.size = [self.text_size[0],self.text_size[1]+dp(30)]
+                widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(30)]
+
+            Clock.schedule_once(fix,0.01)
             return True
 
     def handle_msg(self, msg, nickname, *largs):
@@ -256,7 +278,11 @@ class PrivaChat(MDApp):
         widget.nickname = nickname
         self.chat.ids.chat_handler.add_widget(widget)
         self.chat.ids.view.scroll_to(widget)
-
+        def fix(*largs):
+            widget.size = [self.text_size[0],self.text_size[1]+dp(30)]
+            widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(30)]
+    
+        Clock.schedule_once(fix,0.01)
     def add_server_log(self, log):
         def add(*largs):
             label = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[-1])

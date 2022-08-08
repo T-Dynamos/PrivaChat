@@ -2,63 +2,50 @@
 <ChatText>:
 	text:""
 	nickname:app.nickname
-	anchor_x:"right"
-	size_hint_y: None
-	minimum_height:dp(70)
-	size:app.x(),dp(70)
-	size_hint:1,None
-	height: self.minimum_height
-	size_hint_x: None
 	width:app.x()
+	adaptive_height:True
 	MDCard:
+		pos_hint:{"center_x":0.55}
 		radius:dp(10),0,0,dp(10)
-		size_hint_y: None
-		size:appx.x()-dp(70),dp(70)
-		minimum_height:dp(70)
-		size_hint:None,None
-		height: self.minimum_height
-		size_hint_x: None
-		width:app.x()
+		size_hint_x: 0.9
+		width:app.x()-dp(70)
+		adaptive_height:True
 		padding:dp(10) 
 		orientation:"vertical"
-		md_bg_color:app.theme_cls.primary_color
-		RelativeLayout:
-			MDLabel:
-				pos_hint:{"center_x":0.5,"center_y":0.99}
-				text:root.nickname+" "+app.date()
-				font_name:"assets/Poppins-Medium.ttf"
-				font_size:dp(7)
-
-			MDLabel:
-				text:root.text
-				font_name:"assets/Poppins-Regular.ttf"
+		md_bg_color:"#FCEFBA"
+		MDLabel:
+			adaptive_height:True
+			text:root.text+str(app.ch_s(self.size))[:-4]
+			font_name:"assets/Poppins-Regular.ttf"
+	MDLabel:
+		pos_hint:{"center_y":0.85,"center_x":0.64}
+		text:root.nickname+" "+app.date()
+		font_name:"assets/Poppins-Medium.ttf"
+		font_size:dp(10)
 
 <PersonText>:
 	text:""
-	nickname:''
-	size_hint:None,None 
-	size:app.x(),dp(70)
-	AnchorLayout:
-		anchor_x:"left"
-		size_hint:None,None 
-		size:app.x(),dp(70)
-		MDCard:
-			radius:0,dp(10),dp(10),0
-			size_hint:None,None 
-			size:app.x()-dp(70),dp(70)
-			padding:dp(10) 
-			orientation:"vertical"
-			md_bg_color:app.theme_cls.accent_color
-			RelativeLayout:
-				MDLabel:
-					pos_hint:{"center_x":0.5,"center_y":0.99}
-					text:root.nickname+" "+app.date()
-					font_name:"assets/Poppins-Medium.ttf"
-					font_size:dp(7)
-
-				MDLabel:
-					text:root.text
-					font_name:"assets/Poppins-Regular.ttf"
+	nickname:app.nickname
+	width:app.x()
+	adaptive_height:True
+	MDCard:
+		pos_hint:{"center_x":0.45}
+		radius:0,dp(10),dp(10),0
+		size_hint_x:0.9
+		width:app.x()-dp(70)
+		adaptive_height:True
+		padding:dp(10) 
+		orientation:"vertical"
+		md_bg_color:app.theme_cls.bg_normal
+		MDLabel:
+			adaptive_height:True
+			text:root.text+str(app.ch_s(self.size))[:-4]
+			font_name:"assets/Poppins-Regular.ttf"
+	MDLabel:
+		pos_hint:{"center_y":0.85}
+		text:root.nickname+" "+app.date()
+		font_name:"assets/Poppins-Medium.ttf"
+		font_size:dp(10)
 
 ModalView:
 	background_color:0,0,0,0

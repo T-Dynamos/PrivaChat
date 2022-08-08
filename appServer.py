@@ -54,12 +54,14 @@ def handle_client(	nickname,
 					port,
 					addr,
 					shutdown,
+					chat,
 					*largs)	:
 
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
 		client.connect((addr, int(port)))
 	except Exception as e:
+		chat()
 		shutdown(str(e))
 	def sendMessage(msg,*largs):
 		send_message()
