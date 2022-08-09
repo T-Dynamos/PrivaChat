@@ -266,6 +266,7 @@ class PrivaChat(MDApp):
             def fix(*largs):
                 self.chat.ids.text_feild.text = " "
                 print("on func"+str(self.text_size))
+                self.chat.ids.view.scroll_to(widget)
                 widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
                 widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(40)]
 
