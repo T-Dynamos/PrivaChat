@@ -97,12 +97,13 @@ class PrivaChat(MDApp):
 
     def read_settings(self):
         import setting
-        return [setting.dark_mode, setting.save_chats, setting.wallpaper]
+        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color]
 
     def build(self):
-        self.chat_img = self.read_settings()[-1]
+        self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = "Orange"
         self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
+        self.chat_color = self.read_settings()[-1][0] if self.theme_cls.theme_style == "Light" else self.read_settings()[-1][-1] 
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
         self.screen_manager.current = "splash"
@@ -265,8 +266,8 @@ class PrivaChat(MDApp):
             def fix(*largs):
                 self.chat.ids.text_feild.text = " "
                 print("on func"+str(self.text_size))
-                widget.size = [self.text_size[0],self.text_size[1]+dp(30)]
-                widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(30)]
+                widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
+                widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(40)]
 
             Clock.schedule_once(fix,0.01)
             return True
@@ -279,8 +280,8 @@ class PrivaChat(MDApp):
         self.chat.ids.chat_handler.add_widget(widget)
         self.chat.ids.view.scroll_to(widget)
         def fix(*largs):
-            widget.size = [self.text_size[0],self.text_size[1]+dp(30)]
-            widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(30)]
+            widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
+            widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(40)]
     
         Clock.schedule_once(fix,0.01)
     def add_server_log(self, log):
