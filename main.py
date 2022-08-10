@@ -7,6 +7,7 @@ from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import *
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.relativelayout import MDRelativeLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.toast import toast as Toast2
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -19,12 +20,13 @@ from datetime import datetime
 from kivy.uix.screenmanager import *
 import _thread
 import appServer
+import os
 
 __version__ = "1.0"
 
 if platform != "android":
-    Config.set("graphics", "height", "400")
-    Config.set("graphics", "width", "600")
+    Config.set("graphics", "height", "600")
+    Config.set("graphics", "width", "400")
     Config.set("graphics", "fps", "120")
     Window.size = [dp(400), dp(600)]
 
@@ -44,6 +46,10 @@ class PersonText(MDRelativeLayout):
 
 
 class HoverLayout(MDCard, HoverBehavior):
+    pass
+
+
+class ImgBox(MDBoxLayout):
     pass
 
 
@@ -71,6 +77,7 @@ class PrivaChat(MDApp):
     main_screen = None
     settings_view = None
     chat = None
+    wall_change = None
     chat_img = ""
     server_running = False
     dialog = MDDialog
@@ -89,6 +96,13 @@ class PrivaChat(MDApp):
     back_key = 27
 
     MDLabel = MDLabel
+
+    def open_wall(self):
+        for file in os.listdir("wallpapers"):
+            widget = ImgBox()
+            widget.img = "wallpapers/"+file
+            self.wall_change.ids.wall_box.add_widget(widget)
+        self.wall_change.open()
 
     def ch_s(self,size):
         print(size)
@@ -111,9 +125,10 @@ class PrivaChat(MDApp):
 
     def set_mode(self, instance):
         if instance.active == True:
-            self.theme_cls.them_style = "Dark"
+            self.theme_cls.theme_style = "Dark"
+            print("Hy")
         else:
-            self.theme_cls.them_style = "Light"
+            self.theme_cls.theme_style = "Light"
 
     def on_start(self):
         widget  = ChatText()
@@ -145,6 +160,7 @@ class PrivaChat(MDApp):
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
         self.chat = Builder.load_file("kvfiles/chat.kv")
+        self.wall_change = Builder.load_file("kvfiles/wall.kv")
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"
@@ -288,7 +304,7 @@ class PrivaChat(MDApp):
     def add_server_log(self, log):
         def add(*largs):
             label = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[-1])
-            label.text = log
+            label.text = "["+self.date()+"] : "+log
             self.main_screen.ids.server_loger.add_widget(label)
 
         Clock.schedule_once(add)

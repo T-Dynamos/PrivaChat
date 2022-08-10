@@ -19,6 +19,7 @@
 	size_hint:None,None 
 	size:app.x(),dp(50)
 	padding:dp(10)
+	press:print
 	RelativeLayout:
 		MDLabel:
 			text:root.text
@@ -27,6 +28,7 @@
 		MDIconButton:
 			icon:"chevron-right"
 			pos_hint:{"center_x":0.9,"center_y":0.3}
+			on_press:root.press()
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
@@ -42,7 +44,7 @@ ModalView:
 		MDCard:
 			size_hint:None,None
 			size:app.x(),dp(300)
-			pos_hint:{"center_x":0.5,"center_y":0.8}
+			pos_hint:{"center_x":0.5,"center_y":0.7}
 			md_bg_color:0,0,0,0
 			orientation: 'vertical'
 			padding:dp(10)
@@ -55,6 +57,9 @@ ModalView:
 			MDSeparator:
 			ListIcon:
 				text:"Change theme"
+			ListIcon:
+				text:"Change chat wallpaper"
+				press:app.open_wall
 			ListIcon:
 				text:"Change chat save path"						
 

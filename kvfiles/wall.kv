@@ -1,0 +1,29 @@
+<ImgBox>:
+	img:''
+	size_hint:None,None 
+	size:(app.x()-dp(20))/3,app.y()/3
+	FitImage:
+		source:root.img
+ModalView:
+	on_open:app.open_modal(self)
+	on_dismiss:app.close_modal(self)
+	background_color:app.theme_cls.bg_dark
+	opacity:0
+	RelativeLayout:
+		MDLabel:
+			pos_hint:{"center_y":0.9}
+			text:"Wallpapers"
+			font_name:"assets/Poppins-Bold.ttf"
+			font_size:"30sp"
+			halign:"center"
+
+		BoxLayout:
+			pos_hint:{"center_y":0.5,"center_x":0.5}
+			size_hint:None,None 
+			size:app.x()-dp(20),app.y()-dp(50)
+			ScrollView:
+				GridLayout:
+					adaptive_height:True
+					id:wall_box
+					cols:3
+					spacing:[dp(10),dp(10)]

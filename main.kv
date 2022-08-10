@@ -8,6 +8,7 @@ MDScreen:
 		size_hint:None,None
 		size:[app.x(),dp(70)]
 		radius:[dp(10),dp(10),0,0]
+		md_bg_color:app.theme_cls.bg_dark
 		RelativeLayout:
 			AnchorLayout:
 				anchor_x:"left"
@@ -80,9 +81,10 @@ MDScreen:
 								cols:1 
 								padding:dp(10)
 								MDLabel:
+									adaptive_height:True
 									size_hint:None,None
 									size:app.x()-dp(40),dp(20)
-									text:"Logs start here"
+									text:"["+app.date()+"]: Logs start here"
 									font_name:"assets/SourceCodePro-Regular.otf"
 				MDCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}
@@ -113,6 +115,7 @@ MDScreen:
 		size_hint:None,None
 		size:[app.x()-dp(25),dp(50)]
 		radius:dp(10)
+		md_bg_color:app.theme_cls.bg_dark
 		RelativeLayout:
 			MDSeparator:
 				orientation:"vertical"
@@ -167,6 +170,7 @@ MDScreen:
 			size:[dp(280),app.y()]
 			radius:[0,dp(20),dp(20),0]
 			orientation: 'vertical'
+			md_bg_color:app.theme_cls.bg_normal
 			MDLabel:
 				size_hint:None,None 
 				size:dp(280),dp(50)
@@ -245,8 +249,9 @@ MDScreen:
 					size_hint:None,None 
 					radius:0,dp(10),dp(10),0
 					size:dp(280)-dp(10),dp(50)
-					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
-					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
+					md_bg_color:app.theme_cls.bg_normal
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_dark)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
 					on_press:app.settings_view.open()
 					RelativeLayout:
 						MDLabel:
@@ -262,8 +267,9 @@ MDScreen:
 					radius:0,dp(10),dp(10),0
 					size_hint:None,None 
 					size:dp(280)-dp(10),dp(50)
-					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
-					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
+					md_bg_color:app.theme_cls.bg_normal
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_dark)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
 					RelativeLayout:
 						MDLabel:
 							pos_hint:{"center_x":0.32,"center_y":0.5}
@@ -278,8 +284,9 @@ MDScreen:
 					radius:0,dp(10),dp(10),0
 					size_hint:None,None 
 					size:dp(280)-dp(10),dp(50)
-					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
-					on_leave: app.animate_md_bg_color(self,md_bg_color=[0,0,0,0])
+					md_bg_color:app.theme_cls.bg_normal
+					on_enter: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_dark)
+					on_leave: app.animate_md_bg_color(self,md_bg_color=app.theme_cls.bg_normal)
 					RelativeLayout:
 						MDLabel:
 							pos_hint:{"center_x":0.25,"center_y":0.5}
