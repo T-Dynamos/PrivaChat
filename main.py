@@ -238,23 +238,21 @@ class PrivaChat(MDApp):
                                         "menu" if self.icon == "arrow-left" else "menu"), 0.1)
 
     def change_size_keyboard(self, instance , key):
-        if platform != "android":
-            #from android import get_keyboard_height
-            keyboard_height = lambda: dp(300)#get_keyboard_height()
+        if platform == "android":
+            from android import get_keyboard_height
+            keyboard_height = lambda: get_keyboard_height()
             if key.focus == True:
                 anim = Animation(
                     size=[self.x(), self.y() - keyboard_height()],
                     d=0.2
                 )
                 anim.start(instance)
-                key.focus = True
             else:
                 anim = Animation(
                     size=[self.x(), self.y()],
                     d=0.2
                 )
                 anim.start(instance)
-                #key.focus = True
         else:
             pass
 
@@ -283,6 +281,7 @@ class PrivaChat(MDApp):
             print(self.chat.ids.chat_handler.add_widget(widget))
             def fix(*largs):
                 self.chat.ids.text_feild.text = " "
+                self.chat.ids.text_feild.focus = True
                 print("on func"+str(self.text_size))
                 self.chat.ids.view.scroll_to(widget)
                 widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
