@@ -237,22 +237,24 @@ class PrivaChat(MDApp):
             Clock.schedule_once(partial(self.animate_icon, self.screen_manager.get_screen("main").ids.back_button,
                                         "menu" if self.icon == "arrow-left" else "menu"), 0.1)
 
-    def change_size_keyboard(self, instance):
-        if platform == "android":
-            from android import get_keyboard_height
-            keyboard_height = lambda: get_keyboard_height()
-            if instance.size[-1] != self.y() - keyboard_height():
+    def change_size_keyboard(self, instance , key):
+        if platform != "android":
+            #from android import get_keyboard_height
+            keyboard_height = lambda: dp(300)#get_keyboard_height()
+            if key.focus == True:
                 anim = Animation(
                     size=[self.x(), self.y() - keyboard_height()],
                     d=0.2
                 )
                 anim.start(instance)
+                key.focus = True
             else:
                 anim = Animation(
                     size=[self.x(), self.y()],
                     d=0.2
                 )
                 anim.start(instance)
+                #key.focus = True
         else:
             pass
 

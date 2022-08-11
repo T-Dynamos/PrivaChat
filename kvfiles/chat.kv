@@ -101,9 +101,9 @@ ModalView:
 							line_color_focus:0,0,0,0
 							active_line:False
 							font_name:"assets/Poppins-Regular.ttf"
-							on_focus:app.change_size_keyboard(main_handler)
+							on_focus:app.change_size_keyboard(main_handler,self)
 							keyboard_suggestions:True
-							on_text_validate:app.client[0](text_feild.text);app.change_size_keyboard(main_handler)
+							on_text_validate:app.client[0](text_feild.text)#;app.change_size_keyboard(main_handler,self)
 
 
 					MDIconButton:
