@@ -238,23 +238,23 @@ class PrivaChat(MDApp):
                                         "menu" if self.icon == "arrow-left" else "menu"), 0.1)
 
     def change_size_keyboard(self, instance , key):
-        if platform == "android":
+        try:
             from android import get_keyboard_height
             keyboard_height = lambda: get_keyboard_height()
-            if key.focus == True:
-                anim = Animation(
-                    size=[self.x(), self.y() - keyboard_height()],
-                    d=0.2
-                )
-                anim.start(instance)
-            else:
-                anim = Animation(
-                    size=[self.x(), self.y()],
-                    d=0.2
-                )
-                anim.start(instance)
+        except Exception  as e:
+            keyboard_height = lambda: 0
+        if key.focus == True:
+            anim = Animation(
+                size=[self.x(), self.y() - keyboard_height()],
+                d=0.2
+            )
+            anim.start(instance)
         else:
-            pass
+            anim = Animation(
+                size=[self.x(), self.y()],
+                d=0.2
+            )
+            anim.start(instance)
 
     def connect_client(self, addr, nickname, *largs):
         self.chat = Builder.load_file("kvfiles/chat.kv")
