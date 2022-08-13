@@ -237,25 +237,30 @@ class PrivaChat(MDApp):
             Clock.schedule_once(partial(self.animate_icon, self.screen_manager.get_screen("main").ids.back_button,
                                         "menu" if self.icon == "arrow-left" else "menu"), 0.1)
 
-    def change_size_keyboard(self, instance , key):
+    def change_size_keyboard(self):
         try:
             from android import get_keyboard_height
             keyboard_height = lambda: get_keyboard_height()
 
         except Exception  as e:
             keyboard_height = lambda: dp(200)
-        if key.focus == True:
-            anim = Animation(
-                size=[self.x(), self.y() - keyboard_height()],
-                d=0.2
-            )
-            anim.start(instance)
+        if self.chat.ids.text_feild.focus == True:
+        	anim = Animation(
+        		size=[self.x(),self.y()-keyboard_height()],
+        		d=0.2
+        	)
+        	anim.start(self.chat.ids.main_handler)
+        	def fix(*largs):
+        		self.chat.ids.main_handler.size = [self.x(),self.y()-keyboard_height()]
+        	anim.bind(on_complete=fix)
+        		
+        		
         else:
-            anim = Animation(
-                size=[self.x(), self.y()],
-                d=0.2
-            )
-            anim.start(instance)
+        	anim = Animation(
+        		size=[self.x(),self.y()],
+        		d=0.2
+        	)
+        	anim.start(self.chat.ids.main_handler)        	
 
     def connect_client(self, addr, nickname, *largs):
         self.chat = Builder.load_file("kvfiles/chat.kv")
@@ -282,7 +287,6 @@ class PrivaChat(MDApp):
             print(self.chat.ids.chat_handler.add_widget(widget))
             def fix(*largs):
                 self.chat.ids.text_feild.text = ""
-                self.chat.ids.text_feild.focus = True
                 print("on func"+str(self.text_size))
                 self.chat.ids.view.scroll_to(widget)
                 widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
