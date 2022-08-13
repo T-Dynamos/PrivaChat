@@ -1,4 +1,4 @@
 dark_mode = True
 save_chats = False 
-wallpaper = "wallpapers/mountains.png"
+wallpaper = "wallpapers/planet.jpg"
 chat_color  = ["#FCEFBA","#000C26"]

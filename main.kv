@@ -1,6 +1,6 @@
 #: import partial functools.partial
 #: import Clock kivy.clock.Clock
-
+#: import Clipboard kivy.core.clipboard.Clipboard
 MDScreen:
 	md_bg_color:app.theme_cls.bg_darkest
 	name:"main"
@@ -68,10 +68,40 @@ MDScreen:
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
 						icon_size:dp(100)
+				MDCard:
+					id:addr_box
+					pos_hint:{"center_x":0.5,"center_y":0.85}
+					md_bg_color:app.theme_cls.bg_light
+					radius:dp(15)
+					size_hint:None,None
+					size:app.x()-dp(40),dp(60)
+					opacity:0
+					RelativeLayout:
+						BoxLayout
+							size_hint:None,None
+							size:app.x()-dp(60),dp(60)
+							padding:dp(30)
+							MDLabel:
+								id:addr_text
+								text:"127.0.0.1:9876"
+								font_name:"assets/SourceCodePro-Regular.otf"
+								halign:"center"
+								font_size:"20sp"
+
+
+						AnchorLayout:
+							size_hint:None,None
+							size:dp(60),dp(60)
+							anchor_x:"right"
+							IconButton:
+								icon:"paperclip"
+								on_press:app.animate_icon(self,"clipboard-check-multiple-outline");app.Toast("Copied successfully!");Clipboard.copy(addr_text.text)
+
 				AnchorLayout:
 					id:server_card
 					opacity:0
 					MDCard:
+						md_bg_color:app.theme_cls.bg_light
 						size_hint:None,None
 						size:app.x()-dp(40),app.y()//3+dp(40)
 						ScrollView:
@@ -84,7 +114,7 @@ MDScreen:
 									adaptive_height:True
 									size_hint:None,None
 									size:app.x()-dp(40),dp(20)
-									text:"["+app.date()+"]: Logs start here"
+									text:"["+app.date()+"] : Logs start here"
 									font_name:"assets/SourceCodePro-Regular.otf"
 				MDCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}

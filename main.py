@@ -83,7 +83,7 @@ class PrivaChat(MDApp):
     dialog = MDDialog
 
     ChatText = ChatText
-    Toast = Toast
+    Toast = lambda self,text : Toast(text)
 
     date = lambda self: datetime.now().strftime("%H:%M:%S")
     nickname = ""
@@ -105,7 +105,6 @@ class PrivaChat(MDApp):
         self.wall_change.open()
 
     def ch_s(self,size):
-        print(size)
         self.text_size = size
 
 
@@ -126,14 +125,17 @@ class PrivaChat(MDApp):
     def set_mode(self, instance):
         if instance.active == True:
             self.theme_cls.theme_style = "Dark"
-            print("Hy")
+            self.chat_color =  "#000C26"
+            self.chat_img = "wallpapers/planet.jpg"
+
         else:
             self.theme_cls.theme_style = "Light"
+            self.chat_color =  "#FCEFBA"
+            self.chat_img = "wallpapers/mountains.png"
 
     def on_start(self):
         widget  = ChatText()
         widget.text  = "A long text"*20
-        print(widget.ids)
         Window.bind(on_keyboard=self.handle_keys)
         Clock.schedule_once(self.load_files, 2)
 
@@ -284,10 +286,9 @@ class PrivaChat(MDApp):
                 self.chat.ids.text_feild.text) < self.chat_length:
             widget = ChatText()
             widget.text = self.chat.ids.text_feild.text
-            print(self.chat.ids.chat_handler.add_widget(widget))
+            self.chat.ids.chat_handler.add_widget(widget)
             def fix(*largs):
                 self.chat.ids.text_feild.text = ""
-                print("on func"+str(self.text_size))
                 self.chat.ids.view.scroll_to(widget)
                 widget.size = [self.text_size[0],self.text_size[1]+dp(40)]
                 widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(40)]
@@ -296,7 +297,6 @@ class PrivaChat(MDApp):
             return True
 
     def handle_msg(self, msg, nickname, *largs):
-        print(msg, nickname)
         widget = PersonText()
         widget.text = msg
         widget.nickname = nickname
@@ -318,6 +318,8 @@ class PrivaChat(MDApp):
     def start_server(self, port):
         try:
             self.main_screen.ids.server_card.opacity = 1
+            self.main_screen.ids.addr_box.opacity = 1
+            self.main_screen.ids.addr_text.text = "127.0.0.1:"+port.text
             _thread.start_new_thread(appServer.start_server, (int(port.text), self.add_server_log, self.stop_server))
             self.server_view.dismiss()
             self.server_running = True
