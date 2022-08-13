@@ -103,7 +103,7 @@ ModalView:
 							line_color_focus:0,0,0,0
 							active_line:False
 							font_name:"assets/Poppins-Regular.ttf"
-							on_focus:app.change_size_keyboard(main_handler,self)
+							on_focus:app.change_size_keyboard()
 							keyboard_suggestions:True
 							multiline: True
 
@@ -113,4 +113,4 @@ ModalView:
 						pos_hint:{"center_x":0.9,"center_y":0.62}
 						md_bg_color:app.theme_cls.primary_color
 						icon:"send"
-						on_press:app.client[0](text_feild.text);text_feild.focus = True;text_feild.active = True
+						on_press:app.client[0](text_feild.text)
