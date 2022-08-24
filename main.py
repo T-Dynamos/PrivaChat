@@ -283,7 +283,7 @@ class PrivaChat(MDApp):
             keyboard_height = lambda: get_keyboard_height()
 
         except Exception  as e:
-            keyboard_height = lambda: dp(200)
+            keyboard_height = lambda: 0
         if self.chat.ids.text_feild.focus == True:
         	anim = Animation(
         		size=[self.x(),self.y()-keyboard_height()],
