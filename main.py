@@ -97,6 +97,28 @@ class PrivaChat(MDApp):
 
     MDLabel = MDLabel
 
+    colors =  {
+        "Red":  "#F44336", 
+        "Pink": "#E91E63", 
+        "Purple":"#9C27B0", 
+        "DeepPurple":"#673AB7", 
+        "Indigo":"#3F51B5",
+        "Blue":"#2196F3", 
+        "LightBlue":"#03A9F4", 
+        "Cyan":"#00BCD4", 
+        "Teal":"#009688",
+        "Green":"#4CAF50", 
+        "LightGreen":"#8BC34A", 
+        "Lime":"#CDDC39", 
+        "Yellow":"#FFEB3B", 
+        "Amber":"#FFC107", 
+        "Orange":"#FF9800", 
+        "DeepOrange":"#FF5722", 
+        "Brown":"#795548", 
+        "Gray":"#9E9E9E", 
+        "BlueGray":"#607D8B"
+                }
+
     def open_wall(self):
         for file in os.listdir("wallpapers"):
             widget = ImgBox()
@@ -112,11 +134,19 @@ class PrivaChat(MDApp):
         import setting
         return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color]
 
+    def write_settings(self,key,value):
+        file = open("setting.py","r")
+        read = file.read().split("\n")
+        for count,line in enumerate(read):
+            if line.split(" ")[0] == key:
+                read[count] = key+" = "+value
+                open("setting.py","w").write("\n".join(read))
+
     def build(self):
         self.chat_img = self.read_settings()[2]
-        self.theme_cls.accent_palette = "Orange"
+        self.theme_cls.accent_palette = "Lime"
         self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
-        self.chat_color = self.read_settings()[-1][0] if self.theme_cls.theme_style == "Light" else self.read_settings()[-1][-1] 
+        self.chat_color = self.read_settings()[-1]
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
         self.screen_manager.current = "splash"
@@ -124,14 +154,22 @@ class PrivaChat(MDApp):
 
     def set_mode(self, instance):
         if instance.active == True:
+            self.write_settings("dark_mode","True")
+            self.write_settings("chat_color",'"#162D3E"')
             self.theme_cls.theme_style = "Dark"
-            self.chat_color =  "#000C26"
+            self.chat_color =  "#162D3E"
             self.chat_img = "wallpapers/planet.jpg"
+            self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
+            self.server_view = Builder.load_file("kvfiles/server_start.kv")
 
         else:
+            self.write_settings("dark_mode","False")
+            self.write_settings("chat_color",'"#FCEFBA"')
             self.theme_cls.theme_style = "Light"
-            self.chat_color =  "#FCEFBA"
+            self.chat_color = "#FCEFBA"
             self.chat_img = "wallpapers/mountains.png"
+            self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
+            self.server_view = Builder.load_file("kvfiles/server_start.kv")
 
     def on_start(self):
         widget  = ChatText()
@@ -245,7 +283,7 @@ class PrivaChat(MDApp):
             keyboard_height = lambda: get_keyboard_height()
 
         except Exception  as e:
-            keyboard_height = lambda: 0
+            keyboard_height = lambda: dp(200)
         if self.chat.ids.text_feild.focus == True:
         	anim = Animation(
         		size=[self.x(),self.y()-keyboard_height()],
@@ -333,12 +371,6 @@ class PrivaChat(MDApp):
 
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()
-
-        # self.animate_icon(self.main_screen.ids.server_icon,"plus")
-        # self.main_screen.ids.server_text.text  = "Start a server"
-        # self.server_running = False
-        # self.main_screen.ids.server_card.opacity  = 0
-        # self.server_view.ids.test_text_feild.text = ""
 
 
 PrivaChat().run()

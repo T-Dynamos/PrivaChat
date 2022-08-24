@@ -1,6 +1,6 @@
 <ListSwitch@MDBoxLayout>:
 	text:""
-	active:False
+	active: False
 	s_press:print
 	size_hint:None,None 
 	size:app.x(),dp(50)
@@ -34,7 +34,8 @@ ModalView:
 	on_dismiss:app.close_modal(self)
 	background_color:app.theme_cls.bg_normal
 	opacity:0
-	RelativeLayout:
+	MDRelativeLayout:
+		md_bg_color:app.theme_cls.bg_normal
 		MDLabel:
 			pos_hint:{"center_x":0.535,"center_y":0.95}
 			text:"Settings"

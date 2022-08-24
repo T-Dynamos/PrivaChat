@@ -8,7 +8,7 @@
 		pos_hint:{"center_x":0.55}
 		radius:dp(10),0,0,dp(10)
 		size_hint_x: 0.9
-		width:app.x()-dp(70)
+		width: app.x()-dp(70)
 		adaptive_height:True
 		padding:dp(10)
 		orientation:"vertical"
@@ -59,15 +59,15 @@ ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
 	opacity:0
+	FitImage:
+		source:app.chat_img
 	AnchorLayout:
 		anchor_y:"top"
 		MDRelativeLayout:
 			size_hint:None,None 
 			size:app.x(),app.y()
 			id:main_handler
-			md_bg_color:app.theme_cls.bg_light
-			FitImage:
-				source:app.chat_img
+			md_bg_color:0,0,0,0
 			AnchorLayout:
 				anchor_y:"top"
 				md_bg_color:0,0,0,0
