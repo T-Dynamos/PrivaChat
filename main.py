@@ -211,16 +211,16 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         Window.bind(on_keyboard=self.handle_keys)
-        time.sleep(1)
-        self.load_files()
+        Clock.schedule_once(self.load_files,1)
+        Clock.schedule_once(self.add_images,0.5)
 
+    def add_images(self,arg):
         for dir in self.read_settings()[-1]:
             for file in os.listdir(dir):
                 if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
                     widget = ImgBox()
                     widget.img = dir+"/"+file
                     self.wall_change.ids.wall_box.add_widget(widget)
-        print(self.wall_change.ids.wall_box.children)
         
 
     def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
