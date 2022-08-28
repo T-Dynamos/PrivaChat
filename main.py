@@ -122,6 +122,7 @@ class PrivaChat(MDApp):
     wall_change = None
     chat_img = ""
     server_running = False
+    theme_change = None
     dialog = MDDialog
 
     ChatText = ChatText
@@ -164,13 +165,16 @@ class PrivaChat(MDApp):
     def open_wall(self):
         self.wall_change.open()
 
+    def open_theme(self):
+        self.theme_change.open()
+
     def ch_s(self,size):
         self.text_size = size
 
 
     def read_settings(self):
         import setting
-        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color,setting.wallpaper_path]
+        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color,setting.wallpaper_path,setting.accent_palette,setting.primary_palette]
 
     def write_settings(self,key,value):
         file = open("setting.py","r")
@@ -182,7 +186,8 @@ class PrivaChat(MDApp):
 
     def build(self):
         self.chat_img = self.read_settings()[2]
-        self.theme_cls.accent_palette = "Lime"
+        self.theme_cls.accent_palette = self.read_settings()[5]
+        self.theme_cls.primary_palette = self.read_settings()[6]
         self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
         self.chat_color = self.read_settings()[3]
         self.theme_cls.material_style = "M3"
@@ -215,12 +220,14 @@ class PrivaChat(MDApp):
         Clock.schedule_once(self.add_images,0.5)
 
     def add_images(self,arg):
-        for dir in self.read_settings()[-1]:
-            for file in os.listdir(dir):
-                if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
-                    widget = ImgBox()
-                    widget.img = dir+"/"+file
-                    self.wall_change.ids.wall_box.add_widget(widget)
+        for dir in self.read_settings()[4]:
+            if os.path.isdir(dir):
+                for file in os.listdir(dir):
+                    if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
+                        widget = ImgBox()
+                        widget.img = dir+"/"+file
+                        self.wall_change.ids.wall_box.add_widget(widget)
+
         
 
     def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
@@ -247,6 +254,7 @@ class PrivaChat(MDApp):
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
         self.chat = Builder.load_file("kvfiles/chat.kv")
         self.wall_change = Builder.load_file("kvfiles/wall.kv")
+        self.theme_change = Builder.load_file("kvfiles/theme.kv")
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"

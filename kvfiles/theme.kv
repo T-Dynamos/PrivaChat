@@ -1,13 +1,24 @@
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
-	background_color: (0,0,0,0.3)
-	opacity: 0
+	background_color:0,0,0,0
+	opacity:0
 	RelativeLayout:
 		MDCustomCard:
-			size_hint:None ,None 
-			size:app.x()-dp(40),app.y()//1.5
-			radius:dp(20)
+			pos_hint:{"center_x":0.5,"center_y":0.5}
+			size_hint:None,None
+			size:app.x()-dp(40),app.y()/2
 			md_bg_color:app.theme_cls.bg_normal
+			radius:dp(20)
 			RelativeLayout:
-				
+				AnchorLayout:
+					anchor_y:"top"
+					MDCustomCard:
+						size_hint:None,None 
+						radius:dp(20),dp(20),0,0
+						size:app.x()-dp(40),dp(50)
+						md_bg_color:app.theme_cls.primary_color
+						MDLabel:
+							text:"Change theme"
+							font_name:"assets/Poppins-Medium.ttf"
+							halign:"center"
