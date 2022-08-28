@@ -4,11 +4,12 @@ ModalView:
     background_color: (0,0,0,0.3)
     opacity:0
     RelativeLayout:
-        MDCard:
+        MDCustomCard:
             pos_hint:{"center_x":0.5,"center_y":0.5}
             size_hint: (None, None)
             size:app.x()-dp(80),dp(180)
             radius:dp(20)
+            md_bg_color:app.theme_cls.bg_light
             RelativeLayout:
                 MDLabel:
                     id:la

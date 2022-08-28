@@ -4,15 +4,16 @@ ModalView:
 	background_color: (0,0,0,0.3)
 	opacity:0
 	RelativeLayout:
-		MDCard:
+		MDCustomCard:
 			pos_hint:{"center_x":0.5,"center_y":0.7}
 			size_hint: (None, None)
 			size:app.x()-dp(40),dp(250)
 			radius:dp(20)
+			md_bg_color:app.theme_cls.bg_normal
 			RelativeLayout:
 				AnchorLayout:
 					anchor_y:"top"
-					MDCard:
+					MDCustomCard:
 						size_hint:None,None 
 						radius:dp(20),dp(20),0,0
 						size:app.x()-dp(40),dp(50)

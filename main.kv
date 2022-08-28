@@ -4,7 +4,7 @@
 MDScreen:
 	md_bg_color:app.theme_cls.bg_darkest
 	name:"main"
-	MDCard:
+	MDCustomCard:
 		size_hint:None,None
 		size:[app.x(),dp(70)]
 		radius:[dp(10),dp(10),0,0]
@@ -37,7 +37,7 @@ MDScreen:
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
 						icon_size:dp(100)
-				MDCard:
+				MDCustomCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}
 					radius:dp(10)
 					md_bg_color:app.theme_cls.primary_dark
@@ -55,7 +55,7 @@ MDScreen:
 							pos_hint:{"center_x":0.9}
 							size_hint:1,1
 							icon:"plus"
-						MDCard:
+						MDCustomCard:
 							md_bg_color:0,0,0,0
 							on_press:app.chat_view.open()
 			MDScreen:
@@ -68,7 +68,7 @@ MDScreen:
 						theme_icon_color:"Custom"
 						icon_color:app.theme_cls.bg_light
 						icon_size:dp(100)
-				MDCard:
+				MDCustomCard:
 					id:addr_box
 					pos_hint:{"center_x":0.5,"center_y":0.85}
 					md_bg_color:app.theme_cls.bg_light
@@ -100,7 +100,8 @@ MDScreen:
 				AnchorLayout:
 					id:server_card
 					opacity:0
-					MDCard:
+					MDCustomCard:
+						radius:dp(10)
 						md_bg_color:app.theme_cls.bg_light
 						size_hint:None,None
 						size:app.x()-dp(40),app.y()//3+dp(40)
@@ -116,7 +117,7 @@ MDScreen:
 									size:app.x()-dp(40),dp(20)
 									text:"["+app.date()+"] : Logs start here"
 									font_name:"assets/SourceCodePro-Regular.otf"
-				MDCard:
+				MDCustomCard:
 					pos_hint:{"center_x":0.5,"center_y":0.15}
 					radius:dp(10)
 					md_bg_color:app.theme_cls.accent_color
@@ -136,10 +137,10 @@ MDScreen:
 							pos_hint:{"center_x":0.9}
 							size_hint:1,1
 							icon:"plus"
-						MDCard:
+						MDCustomCard:
 							md_bg_color:0,0,0,0
 							on_press:app.server_view.open() if app.server_running == False else app.stop_server()
-	MDCard:
+	MDCustomCard:
 		id:control
 		pos_hint:{"center_x":0.5,"center_y":0.95}
 		size_hint:None,None
@@ -151,7 +152,7 @@ MDScreen:
 				orientation:"vertical"
 				pos_hint:{"center_x":0.5,"center_y":0.5}
 
-			MDCard:
+			MDCustomCard:
 				id:card
 				pos_hint:{"center_x":0.25,"center_y":0.5}
 				md_bg_color:app.theme_cls.primary_dark
@@ -161,7 +162,7 @@ MDScreen:
 
 			MDBoxLayout:
 				AnchorLayout:
-					MDCard:
+					MDCustomCard:
 						pos_hint:{"center_x":0.25,"center_y":0.5}
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
@@ -173,7 +174,7 @@ MDScreen:
 							halign:"center"
 							font_name:"assets/Poppins-Medium.ttf"
 				AnchorLayout:
-					MDCard:
+					MDCustomCard:
 						pos_hint:{"center_x":0.75,"center_y":0.5}
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
@@ -188,14 +189,14 @@ MDScreen:
 
 
 
-	MDCard:
+	MDCustomCard:
 		id:drawer
 		pos_hint:{"center_x":-0.5,"center_y":0.5}
 		md_bg_color:0,0,0,0
 		on_press:app.open_drawer()
 		opacity:1
 		radius:0
-		MDCard:
+		MDCustomCard:
 			size_hint:None,None
 			size:[dp(280),app.y()]
 			radius:[0,dp(20),dp(20),0]
@@ -227,7 +228,7 @@ MDScreen:
 				AnchorLayout:
 					size_hint:None,None 
 					size:[dp(280),dp(80)]
-					MDCard:
+					MDCustomCard:
 						size_hint:None,None 
 						size:[dp(280)-dp(20),dp(80)]
 						radius:dp(10)
@@ -244,7 +245,7 @@ MDScreen:
 								icon:"chat-remove-outline"
 								size_hint:1,1
 								ripple_scale:0
-							MDCard:
+							MDCustomCard:
 								pos_hint:{"center_x":0.25,"center_y":0.5}
 								md_bg_color:0,0,0,0
 								on_press:app.open_drawer();app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.primary_dark,radius=[dp(10),0,0,dp(10)]);tab_manager.transition.direction = "right";tab_manager.current = "chat"
@@ -252,7 +253,7 @@ MDScreen:
 				AnchorLayout:
 					size_hint:None,None 
 					size:[dp(280),dp(80)]
-					MDCard:
+					MDCustomCard:
 						size_hint:None,None 
 						size:[dp(280)-dp(20),dp(80)]
 						radius:dp(10)
@@ -270,7 +271,7 @@ MDScreen:
 								icon:"cloud-off-outline"
 								size_hint:1,1
 								ripple_scale:0
-							MDCard:
+							MDCustomCard:
 								pos_hint:{"center_x":0.75,"center_y":0.5}
 								md_bg_color:0,0,0,0
 								on_press:app.open_drawer();app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_color,radius=[0,dp(10),dp(10),0]);tab_manager.transition.direction = "left";tab_manager.current = "server"

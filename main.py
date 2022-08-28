@@ -1,3 +1,4 @@
+
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
@@ -9,9 +10,12 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.toast import toast as Toast2
+from kivymd.theming import ThemableBehavior
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.utils import platform
+from kivy.utils import *
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import *
 from functools import partial
 from kivy.clock import Clock
 from kivy.animation import Animation
@@ -49,9 +53,25 @@ class HoverLayout(MDCard, HoverBehavior):
     pass
 
 
-class ImgBox(MDBoxLayout):
-    pass
+class MDCustomCard(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    focus_behavior.FocusBehavior,
+    BoxLayout
+    ):
 
+    focus_behavior = BooleanProperty(False)
+    ripple_behavior = BooleanProperty(False)
+    elevation = 0
+    shadow_softness = 0
+    style = "filled"
+    #radius = [dp(10),dp(10),dp(10),dp(10)]
+    #md_bg_color = get_color_from_hex("#1D2227")
+
+
+class ImgBox(MDCustomCard):
+    pass
 
 def Toast1(string, *largs):
     Toast2(str(string))
@@ -120,10 +140,6 @@ class PrivaChat(MDApp):
                 }
 
     def open_wall(self):
-        for file in os.listdir("wallpapers"):
-            widget = ImgBox()
-            widget.img = "wallpapers/"+file
-            self.wall_change.ids.wall_box.add_widget(widget)
         self.wall_change.open()
 
     def ch_s(self,size):
@@ -172,10 +188,12 @@ class PrivaChat(MDApp):
             self.server_view = Builder.load_file("kvfiles/server_start.kv")
 
     def on_start(self):
-        widget  = ChatText()
-        widget.text  = "A long text"*20
         Window.bind(on_keyboard=self.handle_keys)
-        Clock.schedule_once(self.load_files, 2)
+        self.load_files()
+        for file in os.listdir("wallpapers"):
+            widget = ImgBox()
+            widget.img = "wallpapers/"+file
+            self.wall_change.ids.wall_box.add_widget(widget)
 
     def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
         self.dialog = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[0])

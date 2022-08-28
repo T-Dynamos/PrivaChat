@@ -1,29 +1,46 @@
 <ImgBox>:
 	img:''
-	size_hint:None,None 
-	size: (app.x()-dp(20))/3,app.y()/3
+	size_hint:0.25,0.7
+	md_bg_color:0,0,0,0
+	radius:dp(20)
+	on_press:app.chat_img = self.img;app.write_settings("chat_img",root.img);app.Toast("Wallpaper Set!")
+	elevation:0
+	shadow_elevation:0
 	FitImage:
+		radius:dp(10)
 		source:root.img
+
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
-	background_color:app.theme_cls.bg_dark
+	background_color:0,0,0,0
 	opacity:0
 	RelativeLayout:
-		MDLabel:
-			pos_hint:{"center_y":0.9}
-			text:"Wallpapers"
-			font_name:"assets/Poppins-Bold.ttf"
-			font_size:"30sp"
-			halign:"center"
-
-		BoxLayout:
-			pos_hint:{"center_y":0.5,"center_x":0.5}
-			size_hint:None,None 
-			size:app.x()-dp(20),app.y()-dp(50)
-			ScrollView:
-				GridLayout:
-					adaptive_height:True
-					id:wall_box
-					cols:3
-					spacing:[dp(10),dp(10)]
+		MDCustomCard:
+			pos_hint:{"center_x":0.5,"center_y":0.5}
+			size_hint:None,None
+			size:app.x()-dp(40),app.y()/2
+			md_bg_color:app.theme_cls.bg_normal
+			radius:dp(20)
+			RelativeLayout:
+				AnchorLayout:
+					anchor_y:"top"
+					MDCustomCard:
+						size_hint:None,None 
+						radius:dp(20),dp(20),0,0
+						size:app.x()-dp(40),dp(50)
+						md_bg_color:app.theme_cls.primary_color
+						MDLabel:
+							text:"Choose Wallpaper"
+							font_name:"assets/Poppins-Medium.ttf"
+							halign:"center"
+				MDBoxLayout:
+					pos_hint:{"center_y":0.4,"center_x":0.5}
+					size_hint:0.9,0.8
+					md_bg_color:app.theme_cls.bg_normal
+					ScrollView:
+						MDGridLayout:
+							adaptive_height:True
+							id:wall_box
+							cols:3
+							spacing:[dp(10),dp(10)]

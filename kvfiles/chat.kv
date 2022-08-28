@@ -4,7 +4,7 @@
 	nickname:app.nickname
 	width:app.x()
 	adaptive_height:True
-	MDCard:
+	MDCustomCard:
 		pos_hint:{"center_x":0.55}
 		radius:dp(10),0,0,dp(10)
 		size_hint_x: 0.9
@@ -33,7 +33,7 @@
 	nickname:app.nickname
 	width:app.x()
 	adaptive_height:True
-	MDCard:
+	MDCustomCard:
 		pos_hint:{"center_x":0.45}
 		radius:0,dp(10),dp(10),0
 		size_hint_x:0.9
@@ -73,7 +73,7 @@ ModalView:
 				md_bg_color:0,0,0,0
 				ScrollView:
 					size_hint:None,None 
-					size:main_handler.width,main_handler.height-dp(70)
+					size:main_handler.width,main_handler.height-dp(80)
 					id:view
 					scroll_type:["bars", "content"]
 					MDGridLayout:
@@ -90,17 +90,15 @@ ModalView:
 					size:main_handler.width,dp(70)
 					BoxLayout:
 						pos_hint:{"center_x":0.43,"center_y":0.52}
-						size_hint:None,None 
-						size:app.x()-dp(80),dp(40)
+						size_hint:0.8,0.9
 						MDTextField:
 							id:text_feild
-							hint_text:"Enter the message"
-							font_name_hint_text:"assets/Poppins-Regular.ttf"
+							#hint_text:"Enter the message"
+							font_name:"assets/Poppins-Regular.ttf"
 							mode:"fill"
-							max_text_length:app.chat_length
+							#max_text_length:app.chat_length
 							radius:dp(10),dp(10),dp(10),dp(10)
-							line_color_normal:0,0,0,0
-							line_color_focus:0,0,0,0
+							
 							active_line:False
 							font_name:"assets/Poppins-Regular.ttf"
 							on_focus:app.change_size_keyboard()
@@ -108,9 +106,8 @@ ModalView:
 							multiline: True
 
 
-
 					MDIconButton:
-						pos_hint:{"center_x":0.9,"center_y":0.62}
+						pos_hint:{"center_x":0.9,"center_y":0.5}
 						md_bg_color:app.theme_cls.primary_color
 						icon:"send"
 						on_press:app.client[0](text_feild.text)
