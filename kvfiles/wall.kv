@@ -6,6 +6,7 @@
 	on_press:app.chat_img = self.img;app.write_settings("chat_img",root.img);app.Toast("Wallpaper Set!")
 	elevation:0
 	shadow_elevation:0
+	adaptive_height:True
 	FitImage:
 		radius:dp(10)
 		source:root.img
@@ -40,7 +41,7 @@ ModalView:
 					md_bg_color:app.theme_cls.bg_normal
 					ScrollView:
 						MDGridLayout:
-							adaptive_height:True
 							id:wall_box
+							adaptive_height:True
 							cols:3
 							spacing:[dp(10),dp(10)]

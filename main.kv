@@ -1,6 +1,9 @@
 #: import partial functools.partial
 #: import Clock kivy.clock.Clock
 #: import Clipboard kivy.core.clipboard.Clipboard
+#: import CommonGestures gestures4kivy.commongestures.CommonGestures
+
+
 MDScreen:
 	md_bg_color:app.theme_cls.bg_darkest
 	name:"main"
@@ -27,7 +30,7 @@ MDScreen:
 			size_hint:None,None
 			size:app.x(),app.y()-dp(140)
 			id:tab_manager
-			MDScreen:
+			MDScreenG:
 				name:"chat"
 				md_bg_color:app.theme_cls.bg_darkest
 				AnchorLayout:
@@ -58,7 +61,7 @@ MDScreen:
 						MDCustomCard:
 							md_bg_color:0,0,0,0
 							on_press:app.chat_view.open()
-			MDScreen:
+			MDScreenG:
 				name:"server"
 				md_bg_color:app.theme_cls.bg_darkest
 				AnchorLayout:
@@ -163,6 +166,7 @@ MDScreen:
 			MDBoxLayout:
 				AnchorLayout:
 					MDCustomCard:
+						id:cc
 						pos_hint:{"center_x":0.25,"center_y":0.5}
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
@@ -175,6 +179,7 @@ MDScreen:
 							font_name:"assets/Poppins-Medium.ttf"
 				AnchorLayout:
 					MDCustomCard:
+						id:sc
 						pos_hint:{"center_x":0.75,"center_y":0.5}
 						md_bg_color:0,0,0,0
 						size_hint:None,None 
@@ -246,6 +251,7 @@ MDScreen:
 								size_hint:1,1
 								ripple_scale:0
 							MDCustomCard:
+								size_hint:0.5,1					
 								pos_hint:{"center_x":0.25,"center_y":0.5}
 								md_bg_color:0,0,0,0
 								on_press:app.open_drawer();app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.primary_dark,radius=[dp(10),0,0,dp(10)]);tab_manager.transition.direction = "right";tab_manager.current = "chat"

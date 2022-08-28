@@ -10,6 +10,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.toast import toast as Toast2
+from kivymd.uix.screen import MDScreen
 from kivymd.theming import ThemableBehavior
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -22,8 +23,10 @@ from kivy.animation import Animation
 from kivy.config import Config
 from datetime import datetime
 from kivy.uix.screenmanager import *
+from gestures4kivy.commongestures import CommonGestures
 import _thread
 import appServer
+import time
 import os
 
 __version__ = "1.0"
@@ -68,6 +71,25 @@ class MDCustomCard(
     style = "filled"
     #radius = [dp(10),dp(10),dp(10),dp(10)]
     #md_bg_color = get_color_from_hex("#1D2227")
+
+class MDScreenG(MDScreen,CommonGestures):
+
+    def cg_swipe_horizontal(*largs):
+
+        app = MDApp.get_running_app()
+
+        if largs[-1] == True:
+            if largs[0].name == "chat":
+                app.open_drawer()
+            if largs[0].name == "server":
+                app.animate_pos_hint(app.screen_manager.get_screen("main").ids.card,app.screen_manager.get_screen("main").ids.cc.pos_hint,md_bg_color=app.theme_cls.primary_dark,radius=[dp(10),0,0,dp(10)])
+                app.screen_manager.get_screen("main").ids.tab_manager.transition.direction = "right"
+                app.screen_manager.get_screen("main").ids.tab_manager.current = "chat"
+        else:
+             if largs[0].name == "chat":
+                app.animate_pos_hint(app.screen_manager.get_screen("main").ids.card,app.screen_manager.get_screen("main").ids.sc.pos_hint,md_bg_color=app.theme_cls.accent_dark,radius=[0,dp(10),dp(10),0])
+                app.screen_manager.get_screen("main").ids.tab_manager.transition.direction = "left"
+                app.screen_manager.get_screen("main").ids.tab_manager.current = "server"
 
 
 class ImgBox(MDCustomCard):
@@ -148,7 +170,7 @@ class PrivaChat(MDApp):
 
     def read_settings(self):
         import setting
-        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color]
+        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color,setting.wallpaper_path]
 
     def write_settings(self,key,value):
         file = open("setting.py","r")
@@ -162,7 +184,7 @@ class PrivaChat(MDApp):
         self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = "Lime"
         self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
-        self.chat_color = self.read_settings()[-1]
+        self.chat_color = self.read_settings()[3]
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
         self.screen_manager.current = "splash"
@@ -189,11 +211,17 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         Window.bind(on_keyboard=self.handle_keys)
+        time.sleep(1)
         self.load_files()
-        for file in os.listdir("wallpapers"):
-            widget = ImgBox()
-            widget.img = "wallpapers/"+file
-            self.wall_change.ids.wall_box.add_widget(widget)
+
+        for dir in self.read_settings()[-1]:
+            for file in os.listdir(dir):
+                if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
+                    widget = ImgBox()
+                    widget.img = dir+"/"+file
+                    self.wall_change.ids.wall_box.add_widget(widget)
+        print(self.wall_change.ids.wall_box.children)
+        
 
     def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
         self.dialog = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[0])
