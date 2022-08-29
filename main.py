@@ -221,12 +221,15 @@ class PrivaChat(MDApp):
 
     def add_images(self,arg):
         for dir in self.read_settings()[4]:
-            if os.path.isdir(dir):
-                for file in os.listdir(dir):
-                    if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
-                        widget = ImgBox()
-                        widget.img = dir+"/"+file
-                        self.wall_change.ids.wall_box.add_widget(widget)
+            try:
+                if os.path.isdir(dir):
+                    for file in os.listdir(dir):
+                        if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
+                            widget = ImgBox()
+                            widget.img = dir+"/"+file
+                            self.wall_change.ids.wall_box.add_widget(widget)
+            except Exception as e:
+                pass         
 
         
 
