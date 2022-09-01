@@ -1,4 +1,3 @@
-
 from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
@@ -8,7 +7,6 @@ from kivymd.uix.templates import RotateWidget
 from kivymd.uix.button import *
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.toast import toast as Toast2
 from kivymd.uix.screen import MDScreen
 from kivymd.theming import ThemableBehavior
@@ -26,7 +24,6 @@ from kivy.uix.screenmanager import *
 from gestures4kivy.commongestures import CommonGestures
 import _thread
 import appServer
-import time
 import os
 
 __version__ = "1.0"
@@ -220,6 +217,7 @@ class PrivaChat(MDApp):
         Clock.schedule_once(self.add_images,0.5)
 
     def add_images(self,arg):
+        self.root.opacity = 0 
         for dir in self.read_settings()[4]:
             try:
                 if os.path.isdir(dir):
@@ -230,7 +228,7 @@ class PrivaChat(MDApp):
                             self.wall_change.ids.wall_box.add_widget(widget)
             except Exception as e:
                 pass         
-
+        self.root.opacity = 1
         
 
     def dialog_constructor(self, message, ctext, ftext, on_ok_press, on_press_cancel=None, close_on_ok=False):
@@ -256,9 +254,11 @@ class PrivaChat(MDApp):
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
         self.chat = Builder.load_file("kvfiles/chat.kv")
+        #self.lock = Builder.load_file("kvfiles/lock.kv")
         self.wall_change = Builder.load_file("kvfiles/wall.kv")
         self.theme_change = Builder.load_file("kvfiles/theme.kv")
         self.screen_manager.add_widget(self.main_screen)
+        #self.screen_manager.add_widget(self.lock)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "main"
         self.screen_manager.transition = SlideTransition()
@@ -337,7 +337,7 @@ class PrivaChat(MDApp):
     def change_size_keyboard(self):
         try:
             from android import get_keyboard_height
-            keyboard_height = lambda: get_keyboard_height()
+            keyboard_height = lambda: get_keyboard_height() + dp(10)
 
         except Exception  as e:
             keyboard_height = lambda: 0
@@ -402,6 +402,14 @@ class PrivaChat(MDApp):
             widget.children[0].size = [self.text_size[0],self.text_size[1]+dp(40)]
     
         Clock.schedule_once(fix,0.01)
+
+    def erase_message(self,instance):
+        anim = Animation(
+            opacity=0,
+            d=1
+            )
+        anim.start(instance)
+
     def add_server_log(self, log):
         def add(*largs):
             label = Builder.load_string(open("kvfiles/asset.kv", "r").read().split("~~~")[-1])

@@ -4,7 +4,7 @@
 	height:dp(120)
 	md_bg_color:0,0,0,0
 	radius:dp(20)
-	on_press:app.chat_img = self.img;app.write_settings("chat_img",root.img);app.Toast("Wallpaper Set!")
+	on_press:app.chat_img = self.img;app.write_settings("wallpaper",f'"{root.img}"');app.Toast("Wallpaper Set!")
 	elevation:0
 	shadow_elevation:0
 	adaptive_height:True

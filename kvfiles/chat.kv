@@ -10,9 +10,11 @@
 		size_hint_x: 0.9
 		width: app.x()-dp(70)
 		adaptive_height:True
+		opacity:1
 		padding:dp(10)
 		orientation:"vertical"
 		md_bg_color:app.chat_color
+		on_press:app.erase_message(root)
 		MDLabel:
 			text:"[font=assets/SourceCodePro-Regular.otf]["+app.date()+"][/font] : "+"[color=#1976D2]"+root.nickname+"[/color]"
 			font_name:"assets/Poppins-Bold.ttf"
@@ -42,6 +44,7 @@
 		padding:dp(10) 
 		orientation:"vertical"
 		md_bg_color:app.theme_cls.bg_normal
+		on_press:app.erase_message(root)
 		MDLabel:
 			text:"[font=assets/SourceCodePro-Regular.otf]["+app.date()+"][/font] : "+"[color=#FF9800]"+root.nickname+"[/color]"
 			font_name:"assets/Poppins-Bold.ttf"
