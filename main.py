@@ -1,4 +1,5 @@
 from kivy.lang import Builder
+from kivy.uix.behaviors import TouchRippleBehavior
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 from kivymd.uix.card import MDCard
@@ -11,7 +12,7 @@ from kivymd.toast import toast as Toast2
 from kivymd.uix.screen import MDScreen
 from kivymd.theming import ThemableBehavior
 from kivy.core.window import Window
-from kivy.metrics import dp
+from kivy.metrics import dp,sp
 from kivy.utils import *
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import *
@@ -22,6 +23,7 @@ from kivy.config import Config
 from datetime import datetime
 from kivy.uix.screenmanager import *
 from gestures4kivy.commongestures import CommonGestures
+from kivy_garden.frostedglass import FrostedGlass
 import _thread
 import appServer
 import os
@@ -134,6 +136,7 @@ class PrivaChat(MDApp):
     icon = "splash.png"
 
     back_key = 27
+    lock_pass = "0000"
 
     MDLabel = MDLabel
 
@@ -254,14 +257,13 @@ class PrivaChat(MDApp):
         self.server_view = Builder.load_file("kvfiles/server_start.kv")
         self.settings_view = Builder.load_file("kvfiles/settings_view.kv")
         self.chat = Builder.load_file("kvfiles/chat.kv")
-        #self.lock = Builder.load_file("kvfiles/lock.kv")
+        self.lock = Builder.load_file("kvfiles/lock.kv")
         self.wall_change = Builder.load_file("kvfiles/wall.kv")
         self.theme_change = Builder.load_file("kvfiles/theme.kv")
         self.screen_manager.add_widget(self.main_screen)
-        #self.screen_manager.add_widget(self.lock)
+        self.screen_manager.add_widget(self.lock)
         self.screen_manager.transition = FadeTransition()
-        self.screen_manager.current = "main"
-        self.screen_manager.transition = SlideTransition()
+        self.screen_manager.current = "lock"
 
     def animate_icon(self, instance, icon, *largs):
         anim = Animation(
@@ -283,6 +285,24 @@ class PrivaChat(MDApp):
 
         anim2.start(instance)
         anim2.bind(on_complete=change_icon)
+
+    def animate_font_size(self,instance,font_size=None,ori=None,ok=False):
+        anim = Animation(
+            font_size=font_size,
+            d=0.15
+            )
+        anim.start(instance)
+        if ok == True:
+            anim.bind(on_complete=lambda self,arg : MDApp.get_running_app().animate_font_size(instance,font_size=ori))
+
+    def animate_icon_size(self,instance,icon_size=None,ori=None,ok=False):
+        anim = Animation(
+            icon_size=icon_size,
+            d=0.15
+            )
+        anim.start(instance)
+        if ok == True:
+            anim.bind(on_complete=lambda self,arg : MDApp.get_running_app().animate_icon_size(instance,icon_size=ori))
 
     def animate_pos_hint(self, instance, pos_hint, md_bg_color=None, radius=None):
         anim = Animation(
@@ -312,6 +332,72 @@ class PrivaChat(MDApp):
             d=0.3
         ).start(instance)
 
+    def handle_lock(self,text):
+
+        ids = [self.lock.ids.l1,self.lock.ids.l2,self.lock.ids.l3,self.lock.ids.l4]
+        
+        for count,ido in enumerate(ids):
+            if ido.to == "":
+                ido.to = text
+                ido.text = text
+                anim = Animation(
+                    font_size=sp(30),
+                    d=0.1
+                    ) + Animation(
+                    font_size=sp(0),
+                    d=0.1
+                    )
+                anim.start(ido)
+
+                def f(*largs):
+                    ido.text = "."
+                    Animation(font_size=sp(30),d=0.1).start(ido)
+                
+                anim.bind(on_complete = f)
+
+
+                if count == 3:
+                    def pass_lock(arg):
+                        lock =  [self.lock.ids.l1.to,self.lock.ids.l2.to,self.lock.ids.l3.to,self.lock.ids.l4.to]
+                        if "".join(lock) == str(self.lock_pass):
+                            self.screen_manager.current = "main"
+                        else:
+                            for id in ids:
+                                id.text = " "
+                                id.to = ""
+
+                            anim = Animation(
+                                pos_hint = {"center_x":0.45,"center_y":0.9},
+                                d=0.1
+                                ) + Animation(
+                                pos_hint = {"center_x":0.55,"center_y":0.9},
+                                d=0.1                                
+                                ) + Animation(
+                                pos_hint = {"center_x":0.5,"center_y":0.9},
+                                d=0.1
+                                )
+                            anim.start(self.lock.ids.lock_icon)
+                            def more(*largs):
+                                ids[3].text = " "
+                                ids[3].to = ""
+                            Clock.schedule_once(more,0.35)
+                    Clock.schedule_once(pass_lock,0.5)
+
+
+                    break
+                else:
+                    break
+
+    def erase_message_lock(self):
+        ids = [self.lock.ids.l1,self.lock.ids.l2,self.lock.ids.l3,self.lock.ids.l4]
+        
+        for count,ido in enumerate(ids[::-1]):
+            if ido.text == ".":
+                ido.text = " "
+                ido.to  = ""
+                break
+
+
     def open_drawer(self, *largs):
         animation_open = Animation(
             pos_hint={"center_x": 0.5, "center_y": 0.5},
@@ -331,8 +417,12 @@ class PrivaChat(MDApp):
         else:
             self.screen_manager.get_screen("main").ids.drawer.md_bg_color = 0, 0, 0, 0
             animation_close.start(self.screen_manager.get_screen("main").ids.drawer)
-            Clock.schedule_once(partial(self.animate_icon, self.screen_manager.get_screen("main").ids.back_button,
-                                        "menu" if self.icon == "arrow-left" else "menu"), 0.1)
+            Clock.schedule_once(
+                partial(
+                    self.animate_icon, 
+                        self.screen_manager.get_screen("main").ids.back_button,
+                        "menu" if self.icon == "arrow-left" else "menu"), 
+            0.1)
 
     def change_size_keyboard(self):
         try:

@@ -6,7 +6,7 @@
 
 > I made it to overcome the problem of **snapchat** (people hiding their chats and getting caught)
 
-## ScreenShots
+## Screenshots
 |S1|S2|
 |--|--|
 ![Screenshot_2022-09-02-00-27-18_1366x768](https://user-images.githubusercontent.com/68729523/187991745-7f170823-358f-4551-be49-a9cc02a3ab0e.png)|![Screenshot_2022-09-02-00-27-00_1366x768](https://user-images.githubusercontent.com/68729523/187991741-4f8934d5-4df5-4d48-a903-8c1961aa19c8.png)

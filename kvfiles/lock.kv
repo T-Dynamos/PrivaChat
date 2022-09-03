@@ -1,16 +1,121 @@
-<Num@BoxLayout>:
-	size_hint:None,None
+#: import TouchRippleBehavior kivy.uix.behaviors.TouchRippleBehavior
+<Num@MDCard>:
+	text:""
+	size_hint:None,None 
+	size:dp(100),dp(100)
+	radius:dp(100)
+	ripple_behavior:True
+	elevation:0
+	md_bg_color:0,0,0,0
+	ripple_scale:5
+	ripple_duration_in:0.75
+	ripple_duration_out:0.75
+	ripple_pos:0.5,0.5
+	on_press:app.handle_lock(self.text)
+	MDLabel:
+		text:root.text
+		halign:"center"
+		font_size:sp(30)
+		font_name: 'assets/Poppins-Regular.ttf'
+
 MDScreen:
 	name:"lock"
-	FitImage:
-		source:"wallpapers/neon.jpg"
-	MDCustomCard:	
-		pos_hint:{"center_y":0.4,"center_x":0.5}
-		size_hint:0.8,0.5
-		md_bg_color:app.theme_cls.bg_dark
-		radius:dp(20)
-	MDCustomCard:
-		size_hint:0.3,0.2
-		pos_hint:{"center_y":0.15,"center_x":0.5}
-		radius:dp(20)
-		md_bg_color:app.theme_cls.bg_dark
+	Image:
+		id:back
+		source:app.chat_img
+		allow_stretch:True 
+		keep_ratio:False
+	FrostedGlass:
+		background:back
+		blur_size: 10
+		saturation: 1.2
+		luminosity: 1.3
+		overlay_color:[app.theme_cls.bg_light[0],app.theme_cls.bg_light[1],app.theme_cls.bg_light[2],app.theme_cls.bg_light[3]-0.5]
+		noise_opacity: 0.05
+		border_radius: [0,0,0,0]	
+		outline_color: "#00000000"
+	MDBoxLayout:	
+		size_hint:None,None 
+		size:app.x()-dp(50),dp(1)
+		pos_hint:{"center_x":0.5,"center_y":0.65}
+		md_bg_color:"#D6DDE9"
+	MDBoxLayout:	
+		size_hint:None,None 
+		size:app.x()-dp(90),dp(60)	
+		pos_hint:{"center_x":0.5,"center_y":0.7}
+		MDLabel:
+			id:l1
+			halign:"center"
+			to:""
+			text:" "
+			font_name:"assets/Poppins-Bold.ttf"
+			font_size:sp(0)
+		MDLabel:
+			id:l2
+			to:""
+			halign:"center"
+			text:" "
+			font_name:"assets/Poppins-Bold.ttf"
+			font_size:sp(0)
+		MDLabel:
+			id:l3
+			to:""
+			halign:"center"
+			text:" "
+			font_name:"assets/Poppins-Bold.ttf"
+			font_size:sp(0)
+		MDLabel:
+			id:l4
+			to:""
+			halign:"center"
+			text:" "
+			font_name:"assets/Poppins-Bold.ttf"
+			font_size:sp(0)
+
+
+	MDGridLayout:	
+		size_hint:None,None 
+		size:dp(300),dp(400)
+		pos_hint:{"center_x":0.5,"center_y":0.3}
+		cols:3
+		Num:
+			text:"1"
+		Num:
+			text:"2"
+		Num:
+			text:"3"
+		Num:
+			text:"4"
+		Num:
+			text:"5"
+		Num:
+			text:"6"
+		Num:
+			text:"7"
+		Num:
+			text:"8"
+		Num:
+			text:"9"
+		BoxLayout
+		Num:
+			text:"0"
+		AnchorLayout:
+			MDIconButton:
+				icon:"backspace"
+				icon_size:sp(30)
+				halign:"center"
+				on_press:app.erase_message_lock()
+				#on_press:app.animate_icon_size(self,icon_size=sp(10),ori=sp(30),ok=True)
+	MDIcon:
+		id:lock_icon
+		halign:"center"
+		pos_hint:{"center_x":0.5,"center_y":0.9}
+		icon:"lock"
+		font_size:sp(30)
+	MDLabel:
+		pos_hint:{"center_x":0.5,"center_y":0.85}
+		text:"Enter your passowrd"
+		font_name:"assets/Poppins-Medium.ttf"
+		font_size:sp(15)
+		halign:"center"
+
