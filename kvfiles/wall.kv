@@ -1,7 +1,7 @@
 <ImgBox>:
 	img:''
 	size_hint:None,None 
-	size:dp(95),dp(120)
+	size:app.x()//4-dp(5),dp(120)
 	md_bg_color:0,0,0,0
 	radius:dp(20)
 	on_press:app.chat_img = self.img;app.write_settings("wallpaper",f'"{root.img}"');app.Toast("Wallpaper Set!");app.fix_width(self)
