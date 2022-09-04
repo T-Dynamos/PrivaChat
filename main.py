@@ -39,7 +39,7 @@ if platform != "android":
 Config.set("kivy", "exit_on_escape", "0")
 
 
-class IconButton(MDIconButton, RotateWidget):
+class IconButton(MDIconButton, RotateBehavior):
     pass
 
 
@@ -59,6 +59,7 @@ class MDCustomCard(
     DeclarativeBehavior,
     ThemableBehavior,
     BackgroundColorBehavior,
+    TouchBehavior,
     focus_behavior.FocusBehavior,
     BoxLayout
     ):
@@ -70,6 +71,11 @@ class MDCustomCard(
     style = "filled"
     #radius = [dp(10),dp(10),dp(10),dp(10)]
     #md_bg_color = get_color_from_hex("#1D2227")
+    name = "none"
+
+    def on_double_tap(self, touch, *args):
+        if self.name == "chatcard":
+            Animation(opacity=0,d=0.3).start(self.parent)
 
 class MDScreenG(MDScreen,CommonGestures):
 
@@ -91,7 +97,7 @@ class MDScreenG(MDScreen,CommonGestures):
                 app.screen_manager.get_screen("main").ids.tab_manager.current = "server"
 
 
-class ImgBox(MDCustomCard):
+class ImgBox(MDCard):
     pass
 
 def Toast1(string, *largs):
@@ -188,7 +194,7 @@ class PrivaChat(MDApp):
         self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = self.read_settings()[5]
         self.theme_cls.primary_palette = self.read_settings()[6]
-        self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
+        self.theme_cls.theme_style = "Dark" 
         self.chat_color = self.read_settings()[3]
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
@@ -227,7 +233,10 @@ class PrivaChat(MDApp):
                     for file in os.listdir(dir):
                         if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
                             widget = ImgBox()
-                            widget.img = dir+"/"+file
+                            img_file = dir+"/"+file
+                            widget.img = img_file 
+                            if img_file == self.chat_img:
+                                widget.style = "outlined"
                             self.wall_change.ids.wall_box.add_widget(widget)
             except Exception as e:
                 pass         
@@ -360,6 +369,7 @@ class PrivaChat(MDApp):
                     def pass_lock(arg):
                         lock =  [self.lock.ids.l1.to,self.lock.ids.l2.to,self.lock.ids.l3.to,self.lock.ids.l4.to]
                         if "".join(lock) == str(self.lock_pass):
+                            self.theme_cls.theme_style = "Dark" if self.read_settings()[0] == True else "Light"
                             self.screen_manager.current = "main"
                         else:
                             for id in ids:
@@ -388,6 +398,13 @@ class PrivaChat(MDApp):
                 else:
                     break
 
+    def fix_width(self,instance):
+        for widget in self.wall_change.ids.wall_box.children:
+            if widget != instance:
+                widget.line_color = (0,0,0,0)
+            else:
+                widget.line_color =  self.theme_cls.primary_color
+
     def erase_message_lock(self):
         ids = [self.lock.ids.l1,self.lock.ids.l2,self.lock.ids.l3,self.lock.ids.l4]
         
@@ -397,6 +414,12 @@ class PrivaChat(MDApp):
                 ido.to  = ""
                 break
 
+    def lock_screen(self):
+        ids = [self.lock.ids.l1,self.lock.ids.l2,self.lock.ids.l3,self.lock.ids.l4]
+        for wi in ids:
+            wi.text = " "
+            wi.to = ""
+        self.screen_manager.current = "lock"
 
     def open_drawer(self, *largs):
         animation_open = Animation(
@@ -427,7 +450,7 @@ class PrivaChat(MDApp):
     def change_size_keyboard(self):
         try:
             from android import get_keyboard_height
-            keyboard_height = lambda: get_keyboard_height() + dp(10)
+            keyboard_height = lambda: get_keyboard_height() + dp(20)
 
         except Exception  as e:
             keyboard_height = lambda: 0
@@ -493,12 +516,6 @@ class PrivaChat(MDApp):
     
         Clock.schedule_once(fix,0.01)
 
-    def erase_message(self,instance):
-        anim = Animation(
-            opacity=0,
-            d=1
-            )
-        anim.start(instance)
 
     def add_server_log(self, log):
         def add(*largs):

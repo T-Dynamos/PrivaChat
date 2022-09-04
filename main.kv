@@ -2,7 +2,7 @@
 #: import Clock kivy.clock.Clock
 #: import Clipboard kivy.core.clipboard.Clipboard
 #: import CommonGestures gestures4kivy.commongestures.CommonGestures
-
+#: import kivy kivy
 
 MDScreen:
 	md_bg_color:app.theme_cls.bg_darkest
@@ -207,6 +207,7 @@ MDScreen:
 			radius:[0,dp(20),dp(20),0]
 			orientation: 'vertical'
 			md_bg_color:app.theme_cls.bg_normal
+			on_press:app.lock_screen()
 			MDLabel:
 				size_hint:None,None 
 				size:dp(280),dp(50)
@@ -218,7 +219,7 @@ MDScreen:
 			MDLabel:
 				size_hint:None,None 
 				size:dp(280),dp(30)
-				text:"A private chat"
+				text:"Coded by @T-Dynamos"
 				halign:"center"
 				font_name:"assets/Poppins-Regular.ttf"
 				font_size:"15sp"

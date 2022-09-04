@@ -1,16 +1,23 @@
 <ImgBox>:
 	img:''
-	size_hint:0.25,None 
-	height:dp(120)
+	size_hint:None,None 
+	size:dp(95),dp(120)
 	md_bg_color:0,0,0,0
 	radius:dp(20)
-	on_press:app.chat_img = self.img;app.write_settings("wallpaper",f'"{root.img}"');app.Toast("Wallpaper Set!")
+	on_press:app.chat_img = self.img;app.write_settings("wallpaper",f'"{root.img}"');app.Toast("Wallpaper Set!");app.fix_width(self)
 	elevation:0
 	shadow_elevation:0
 	adaptive_height:True
-	FitImage:
-		radius:dp(10)
-		source:root.img
+	style:"elevated"
+	line_color:app.theme_cls.primary_color if self.style == "outlined" else (0,0,0,0)
+	line_width:dp(2)
+	RelativeLayout:
+		FitImage:
+			pos_hint:{"center_x":0.5,"center_y":0.5}
+			size_hint:None,None 
+			size:root.size[0]-dp(3),root.size[-1]-dp(3)
+			radius:dp(20)
+			source:root.img
 
 ModalView:
 	on_open:app.open_modal(self)
@@ -46,3 +53,4 @@ ModalView:
 							adaptive_height:True
 							cols:3
 							spacing:[dp(10),dp(10)]
+							padding:dp(10)

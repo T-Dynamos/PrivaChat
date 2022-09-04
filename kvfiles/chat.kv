@@ -14,7 +14,7 @@
 		padding:dp(10)
 		orientation:"vertical"
 		md_bg_color:app.chat_color
-		on_press:app.erase_message(root)
+		name:"chatcard"
 		MDLabel:
 			text:"[font=assets/SourceCodePro-Regular.otf]["+app.date()+"][/font] : "+"[color=#1976D2]"+root.nickname+"[/color]"
 			font_name:"assets/Poppins-Bold.ttf"
@@ -101,7 +101,8 @@ ModalView:
 							mode:"fill"
 							#max_text_length:app.chat_length
 							radius:dp(10),dp(10),dp(10),dp(10)
-							
+							helper_text: "Type your message here"
+							helper_text_mode:"on_focus"
 							active_line:False
 							font_name:"assets/Poppins-Regular.ttf"
 							on_focus:app.change_size_keyboard()
