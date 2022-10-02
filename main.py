@@ -11,7 +11,6 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.toast import toast as Toast2
 from kivymd.uix.screen import MDScreen
 from kivymd.theming import ThemableBehavior
-from kivy.core.window import Window
 from kivy.metrics import dp,sp
 from kivy.utils import *
 from kivy.uix.boxlayout import BoxLayout
@@ -31,10 +30,11 @@ import os
 __version__ = "1.0"
 
 if platform != "android":
-    Config.set("graphics", "height", "600")
+    Config.set("graphics", "height", "700")
     Config.set("graphics", "width", "400")
     Config.set("graphics", "fps", "120")
-    Window.size = [dp(400), dp(600)]
+    from kivy.core.window import Window
+    Window.size = [dp(400), dp(700)]
 
 Config.set("kivy", "exit_on_escape", "0")
 
@@ -142,7 +142,6 @@ class PrivaChat(MDApp):
     icon = "splash.png"
 
     back_key = 27
-    lock_pass = "0000"
 
     MDLabel = MDLabel
 
@@ -172,6 +171,8 @@ class PrivaChat(MDApp):
         self.wall_change.open()
 
     def open_theme(self):
+        #for i in self.colors.keys():
+
         self.theme_change.open()
 
     def ch_s(self,size):
@@ -180,7 +181,16 @@ class PrivaChat(MDApp):
 
     def read_settings(self):
         import setting
-        return [setting.dark_mode, setting.save_chats, setting.wallpaper ,setting.chat_color,setting.wallpaper_path,setting.accent_palette,setting.primary_palette]
+        return [
+                setting.dark_mode,
+                setting.save_chats,
+                setting.wallpaper,
+                setting.chat_color,
+                setting.wallpaper_path,
+                setting.accent_palette,
+                setting.primary_palette,
+                setting.lock_pass
+                ]
 
     def write_settings(self,key,value):
         file = open("setting.py","r")
@@ -191,6 +201,7 @@ class PrivaChat(MDApp):
                 open("setting.py","w").write("\n".join(read))
 
     def build(self):
+        self.lock_pass = self.read_settings()[7]
         self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = self.read_settings()[5]
         self.theme_cls.primary_palette = self.read_settings()[6]
@@ -219,6 +230,7 @@ class PrivaChat(MDApp):
             self.chat_img = "wallpapers/mountains.png"
             self.chat_view = Builder.load_file("kvfiles/chat_connect.kv")
             self.server_view = Builder.load_file("kvfiles/server_start.kv")
+            self.startup = Builder.load_file("kvfiles/startup.kv")
 
     def on_start(self):
         Window.bind(on_keyboard=self.handle_keys)
@@ -269,10 +281,12 @@ class PrivaChat(MDApp):
         self.lock = Builder.load_file("kvfiles/lock.kv")
         self.wall_change = Builder.load_file("kvfiles/wall.kv")
         self.theme_change = Builder.load_file("kvfiles/theme.kv")
+        self.startup = Builder.load_file("kvfiles/startup.kv")
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.add_widget(self.lock)
+        self.screen_manager.add_widget(self.startup)
         self.screen_manager.transition = FadeTransition()
-        self.screen_manager.current = "lock"
+        self.screen_manager.current = "lock" if self.lock_pass != None else "main"
 
     def animate_icon(self, instance, icon, *largs):
         anim = Animation(
