@@ -2,6 +2,7 @@ from kivy.lang import Builder
 from kivy.uix.behaviors import TouchRippleBehavior
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.behaviors import *
 from kivymd.uix.templates import RotateWidget
@@ -34,7 +35,7 @@ if platform != "android":
     Config.set("graphics", "width", "400")
     Config.set("graphics", "fps", "120")
     from kivy.core.window import Window
-    Window.size = [dp(400), dp(700)]
+    Window.size = [dp(400), dp(600)]
 
 Config.set("kivy", "exit_on_escape", "0")
 
@@ -54,6 +55,8 @@ class PersonText(MDRelativeLayout):
 class HoverLayout(MDCard, HoverBehavior):
     pass
 
+class ThemeCircle(MDBoxLayout):
+    pass
 
 class MDCustomCard(
     DeclarativeBehavior,
@@ -151,14 +154,11 @@ class PrivaChat(MDApp):
         "Purple":"#9C27B0", 
         "DeepPurple":"#673AB7", 
         "Indigo":"#3F51B5",
-        "Blue":"#2196F3", 
-        "LightBlue":"#03A9F4", 
         "Cyan":"#00BCD4", 
         "Teal":"#009688",
         "Green":"#4CAF50", 
         "LightGreen":"#8BC34A", 
         "Lime":"#CDDC39", 
-        "Yellow":"#FFEB3B", 
         "Amber":"#FFC107", 
         "Orange":"#FF9800", 
         "DeepOrange":"#FF5722", 
@@ -234,9 +234,9 @@ class PrivaChat(MDApp):
 
     def on_start(self):
         Window.bind(on_keyboard=self.handle_keys)
-        Clock.schedule_once(self.load_files,1)
-        Clock.schedule_once(self.add_images,0.5)
-
+        Clock.schedule_once(self.load_files)
+        Clock.schedule_once(self.add_images)
+        
     def add_images(self,arg):
         self.root.opacity = 0 
         for dir in self.read_settings()[4]:
@@ -287,6 +287,8 @@ class PrivaChat(MDApp):
         self.screen_manager.add_widget(self.startup)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "lock" if self.lock_pass != None else "main"
+        for color in self.colors.values():
+            self.theme_change.ids.theme_box.add_widget(ThemeCircle(md_bg_color=color))
 
     def animate_icon(self, instance, icon, *largs):
         anim = Animation(

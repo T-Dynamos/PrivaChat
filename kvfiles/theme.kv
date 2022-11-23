@@ -1,3 +1,9 @@
+<ThemeCircle>:
+    size_hint:None,None
+    size:dp(50),dp(50)
+    #md_bg_color:app.theme_cls.primary_color
+    radius:dp(50)   
+
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
@@ -23,3 +29,12 @@ ModalView:
 							text:"Change theme"
 							font_name:"assets/Poppins-Medium.ttf"
 							halign:"center"
+                MDGridLayout:
+                    pos_hint:{"center_x":0.5,"center_y":0.4}
+                    #md_bg_color:app.theme_cls.primary_color
+                    size_hint_x:0.9
+                    adaptive_height:True
+                    cols:4
+                    rows:4
+                    spacing_x:dp(20)
+                    id:theme_box

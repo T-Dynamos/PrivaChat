@@ -8,21 +8,24 @@ nicknames = []
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def start_server(port,print_message,close_request,host="127.0.0.1",*largs) -> None:
-	server.bind((host,port))
+	try:
+	    server.bind((host,port))
+	except Exception as e:
+		close_request(str(e))
 	server.listen()
 	print_message("Server started on : "+str(port))
 	while True:
 		try:
 			client, address = server.accept()  
 			client.send('NICK'.encode('ascii'))                      
-			nickname = client.recv(1024).decode('ascii')               
+			nickname = client.recv(1024).decode('ascii');print(nickname)
 			nicknames.append(nickname)
 			clients.append(client)
 			print_message("{} Joined {}".format(str(nickname),str(address)))
 			thread = threading.Thread(target=handle, args=(client,))   
 			thread.start()  
 		except Exception as e:
-			close_request()
+			close_request(str(e))
 
 
 def broadcast(message): 
@@ -63,10 +66,13 @@ def handle_client(	nickname,
 	except Exception as e:
 		chat()
 		shutdown(str(e))
+
+	if client.recv(1024).decode('ascii') == "NICK":
+		print("Nick",nickname)
+		client.send(nickname.encode('ascii'))
+
 	def sendMessage(msg,*largs):
 		send_message()
-
-
 		client.send(str(msg+" nicksignal "+nickname).encode('ascii'))
 
 	def recieveMessage(*largs):
@@ -74,8 +80,7 @@ def handle_client(	nickname,
 			message = client.recv(1024).decode('ascii')
 			if message is None or message == "":
 				return shutdown()
-			if message == "NICK":
-				client.send(nickname.encode('ascii'))
+
 			else:
 				nickname_2 = message.split("nicksignal")[-1]
 				if nickname_2.replace(" ","") != nickname.replace(" ",""):
