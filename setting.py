@@ -5,3 +5,4 @@ wallpaper_path = ["wallpapers"]
 accent_palette = "LightGreen"
 primary_palette = "Blue"
 lock_pass = None
+dark_mode=True

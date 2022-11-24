@@ -3,6 +3,7 @@ import _thread
 from colorama import *
 import os
 import sys
+import time 
 
 B = Style.BRIGHT + Fore.BLUE
 G = Style.BRIGHT + Fore.GREEN
@@ -61,8 +62,7 @@ class CliHandler():
         if command.startswith("server") and self.executed == False:
             if self.isint(command.split(" ")[-1].strip()):
                 self._thread = _thread.start_new_thread(self.start_server,(int(command.split(" ")[-1].strip()),""))
-                self.logs.append(f"Sever started on {command.split(' ')[-1].strip()}")
-                self.print_log(f"{self.logs[-1]}")
+                time.sleep(0.3);self.print_log(f"{self.logs[-1]}")
             else:
                 self.print_error("Please provide a valid port")
             self.executed = True
