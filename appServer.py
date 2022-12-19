@@ -9,7 +9,7 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def start_server(port,print_message,close_request,host="127.0.0.1",*largs) -> None:
 	try:
-	    server.bind((host,port))
+	    print(host,port);server.bind((host,port))
 	except Exception as e:
 		close_request(str(e))
 	server.listen()

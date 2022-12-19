@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+
+# Coder : T-Dynamos (Ansh Dadwal)
+
 from kivy.lang import Builder
 from kivy.uix.behaviors import TouchRippleBehavior
 from kivymd.app import MDApp
@@ -541,21 +545,47 @@ class PrivaChat(MDApp):
 
         Clock.schedule_once(add)
 
-    def start_server(self, port):
+    def isint(self,string):
         try:
-            self.main_screen.ids.server_card.opacity = 1
-            self.main_screen.ids.addr_box.opacity = 1
-            self.main_screen.ids.addr_text.text = "127.0.0.1:"+port.text
-            _thread.start_new_thread(appServer.start_server, (int(port.text), self.add_server_log, self.stop_server))
-            self.server_view.dismiss()
-            self.server_running = True
-            self.animate_icon(self.main_screen.ids.server_icon, "close")
-            self.main_screen.ids.server_text.text = "Stop server"
-            Toast("Server started successfully")
+            string = int(string)
         except Exception as e:
-            Toast("Unable to start server :" + str(e))
-            self.server_view.dismiss()
-            port.text = ""
+            return False
+        return True
+
+    def vaild_addr(self,addr):
+        if "." not in addr or len(addr.split(".")) != 4 or self.isint("".join(addr.split("."))) == False:
+            return False 
+        return True
+
+    def start_server(self, port):
+        if ":" not in port.text or self.isint(port.text.split(":")[-1]) == False or self.vaild_addr(port.text.split(":")[0]) == False:
+            self.dialog_constructor("Error : Please provide correct adress", "", "OK", self.chat.dismiss, close_on_ok=True).open()
+            return
+
+        def try_run():
+            appServer.start_server(int(port.text.split(":")[-1]), self.add_server_log, self.unable_server, host=port.text.split(":")[0])
+
+        _thread.start_new_thread(try_run,())
+
+        self.main_screen.ids.server_card.opacity = 1
+        self.main_screen.ids.addr_box.opacity = 1
+        self.main_screen.ids.addr_text.text = port.text
+        self.server_view.dismiss()
+        self.server_running = True
+        self.animate_icon(self.main_screen.ids.server_icon, "close")
+        self.main_screen.ids.server_text.text = "Stop server"
+        Toast("Server started successfully")
+
+    def unable_server(self,error):  
+        def run(arg):
+            self.main_screen.ids.server_card.opacity = 0
+            self.main_screen.ids.addr_box.opacity = 0
+            self.main_screen.ids.addr_text.text = ""
+            self.server_running = False
+            self.animate_icon(self.main_screen.ids.server_icon, "plus")
+            self.main_screen.ids.server_text.text = "Start Server"
+            Toast(f"Error : {error}")
+        Clock.schedule_once(run)
 
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()
