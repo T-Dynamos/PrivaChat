@@ -1,8 +1,8 @@
 save_chats = False 
 wallpaper = "wallpapers/keyboards.jpg"
-chat_color = "#162D3E"
+chat_color = "#FCEFBA"
 wallpaper_path = ["wallpapers"]
-accent_palette = "LightGreen"
-primary_palette = "Blue"
+accent_palette = "DeepPurple"
+primary_palette = "Red"
 lock_pass = None
 dark_mode=True

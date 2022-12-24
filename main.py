@@ -39,7 +39,7 @@ if platform != "android":
     Config.set("graphics", "width", "400")
     Config.set("graphics", "fps", "120")
     from kivy.core.window import Window
-    Window.size = [dp(400), dp(600)]
+    Window.size = [dp(380), dp(650)]
 
 Config.set("kivy", "exit_on_escape", "0")
 
@@ -59,7 +59,7 @@ class PersonText(MDRelativeLayout):
 class HoverLayout(MDCard, HoverBehavior):
     pass
 
-class ThemeCircle(MDBoxLayout):
+class ThemeCircle(MDCard):
     pass
 
 class MDCustomCard(
@@ -284,15 +284,33 @@ class PrivaChat(MDApp):
         self.chat = Builder.load_file("kvfiles/chat.kv")
         self.lock = Builder.load_file("kvfiles/lock.kv")
         self.wall_change = Builder.load_file("kvfiles/wall.kv")
-        self.theme_change = Builder.load_file("kvfiles/theme.kv")
         self.startup = Builder.load_file("kvfiles/startup.kv")
         self.screen_manager.add_widget(self.main_screen)
         self.screen_manager.add_widget(self.lock)
         self.screen_manager.add_widget(self.startup)
         self.screen_manager.transition = FadeTransition()
         self.screen_manager.current = "lock" if self.lock_pass != None else "main"
-        for color in self.colors.values():
-            self.theme_change.ids.theme_box.add_widget(ThemeCircle(md_bg_color=color))
+
+    def open_theme_changer(self,type_color):
+        self.theme_change = Builder.load_file("kvfiles/theme.kv")
+        for color,name in zip(self.colors.values(),self.colors.keys()):
+            widget = ThemeCircle(md_bg_color=color)
+            widget.text = name
+            widget.cht = type_color
+            self.theme_change.ids.theme_box.add_widget(widget)
+        self.theme_change.ids.tc.md_bg_color = self.theme_cls.primary_color if type_color == "primary" else self.theme_cls.accent_color
+        self.theme_change.ids.tl.text = type_color.capitalize()
+        self.theme_change.open()
+
+    def change_color_theme(self,color,cht):
+        if cht == "primary":
+            self.theme_cls.primary_palette = color
+            self.write_settings("primary_palette",f'"{color}"')
+            self.theme_change.ids.tc.md_bg_color = self.theme_cls.primary_color
+        else:
+            self.theme_cls.accent_palette = color
+            self.write_settings("accent_palette",f'"{color}"')
+            self.theme_change.ids.tc.md_bg_color = self.theme_cls.accent_color
 
     def animate_icon(self, instance, icon, *largs):
         anim = Animation(

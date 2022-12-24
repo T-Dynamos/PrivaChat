@@ -207,7 +207,7 @@ MDScreen:
 			radius:[0,dp(20),dp(20),0]
 			orientation: 'vertical'
 			md_bg_color:app.theme_cls.bg_normal
-			on_press:app.lock_screen()
+			#on_press:app.lock_screen()
 			MDLabel:
 				size_hint:None,None 
 				size:dp(280),dp(50)
@@ -251,8 +251,7 @@ MDScreen:
 								icon:"chat-remove-outline"
 								size_hint:1,1
 								ripple_scale:0
-							MDCustomCard:
-								size_hint:0.5,1					
+							MDCustomCard:				
 								pos_hint:{"center_x":0.25,"center_y":0.5}
 								md_bg_color:0,0,0,0
 								on_press:app.open_drawer();app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.primary_dark,radius=[dp(10),0,0,dp(10)]);tab_manager.transition.direction = "right";tab_manager.current = "chat"
@@ -272,7 +271,6 @@ MDScreen:
 								text:"Stop Server"
 								font_name:"assets/Poppins-Medium.ttf"
 								halign:"center"
-			
 							IconButton:
 								pos_hint:{"center_x":0.85,"center_y":0.5}
 								icon:"cloud-off-outline"
@@ -282,6 +280,7 @@ MDScreen:
 								pos_hint:{"center_x":0.75,"center_y":0.5}
 								md_bg_color:0,0,0,0
 								on_press:app.open_drawer();app.animate_pos_hint(card,self.pos_hint,md_bg_color=app.theme_cls.accent_color,radius=[0,dp(10),dp(10),0]);tab_manager.transition.direction = "left";tab_manager.current = "server"
+
 				HoverLayout:
 					radius:0,dp(10),dp(10),0
 					size_hint:None,None 

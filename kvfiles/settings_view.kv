@@ -45,7 +45,7 @@ ModalView:
 		MDCustomCard:
 			size_hint:None,None
 			size:app.x(),dp(300)
-			pos_hint:{"center_x":0.5,"center_y":0.7}
+			pos_hint:{"center_x":0.5,"center_y":0.65}
 			md_bg_color:0,0,0,0
 			orientation: 'vertical'
 			padding:dp(10)
@@ -57,8 +57,11 @@ ModalView:
 				text:"Save chats"
 			MDSeparator:
 			ListIcon:
-				text:"Change theme"
-				press:app.open_theme
+				text:"Change primary color"
+				press:lambda : app.open_theme_changer("primary")
+			ListIcon:
+				text:"Change accent color"
+				press:lambda : app.open_theme_changer("accent")
 			ListIcon:
 				text:"Change chat wallpaper"
 				press:app.open_wall

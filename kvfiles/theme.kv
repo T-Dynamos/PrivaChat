@@ -2,8 +2,9 @@
     size_hint:None,None
     size:dp(50),dp(50)
     #md_bg_color:app.theme_cls.primary_color
-    radius:dp(50)   
-
+    radius:dp(50) 
+    on_press:app.change_color_theme(self.text,self.cht)
+    
 ModalView:
 	on_open:app.open_modal(self)
 	on_dismiss:app.close_modal(self)
@@ -12,29 +13,33 @@ ModalView:
 
 	RelativeLayout:
 		MDCustomCard:
-			pos_hint:{"center_x":0.5,"center_y":0.5}
+			pos_hint:{"center_x":0.5,"center_y":0.55}
 			size_hint:None,None
-			size:app.x()-dp(40),app.y()/2
+			size:app.x()-dp(40),(app.y()/2)+dp(40)
 			md_bg_color:app.theme_cls.bg_normal
 			radius:dp(20)
 			RelativeLayout:
 				AnchorLayout:
 					anchor_y:"top"
 					MDCustomCard:
+                        id:tc
 						size_hint:None,None 
 						radius:dp(20),dp(20),0,0
 						size:app.x()-dp(40),dp(50)
 						md_bg_color:app.theme_cls.primary_color
 						MDLabel:
-							text:"Change theme"
+                            id:tl
+							text:"Primay Color"
 							font_name:"assets/Poppins-Medium.ttf"
 							halign:"center"
                 MDGridLayout:
-                    pos_hint:{"center_x":0.5,"center_y":0.4}
+                    pos_hint:{"center_x":0.5,"center_y":0.45}
                     #md_bg_color:app.theme_cls.primary_color
                     size_hint_x:0.9
+                    size_hint_y:0.8
                     adaptive_height:True
                     cols:4
                     rows:4
-                    spacing_x:dp(20)
+                    spacing:dp(25)
+                    padding:dp(10)
                     id:theme_box
