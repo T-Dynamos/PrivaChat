@@ -203,12 +203,12 @@ class PrivaChat(MDApp):
                 ]
 
     def write_settings(self,key,value):
-        file = open(os.path.abspath("setting.py"),"r")
+        file = open("setting.py","r")
         read = file.read().split("\n")
         for count,line in enumerate(read):
             if line.split(" ")[0] == key:
                 read[count] = key+" = "+value
-                open(os.path.abspath("setting.py"),"w").write("\n".join(read))
+                open("setting.py","w").write("\n".join(read))
 
     def build(self):
         self.lock_pass = self.read_settings()[7]

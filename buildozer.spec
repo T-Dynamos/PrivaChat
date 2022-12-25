@@ -3,6 +3,7 @@ title = PrivaChat
 package.name = privachat
 package.domain = com.tdynamos
 source.dir = .
+source.include_exts = py,txt,kv,jpg,png,ttf,otf
 source.exclude_dirs = bin,.buildozer,.git,.github,screenshots
 version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/main.py
