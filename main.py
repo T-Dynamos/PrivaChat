@@ -28,9 +28,11 @@ from datetime import datetime
 from kivy.uix.screenmanager import *
 from gestures4kivy.commongestures import CommonGestures
 from kivy_garden.frostedglass import FrostedGlass
+import random
 import _thread
 import appServer
 import os
+import shutil
 
 __version__ = "1.0"
 
@@ -40,6 +42,9 @@ if platform != "android":
     Config.set("graphics", "fps", "120")
     from kivy.core.window import Window
     Window.size = [dp(380), dp(650)]
+
+if platform == "android":
+    import jnius
 
 from kivy.core.window import Window
 Config.set("kivy", "exit_on_escape", "0")
@@ -146,8 +151,8 @@ class PrivaChat(MDApp):
     chat_length = 1000
     text_size = None
 
-    title = "PrivaChat (Running)"
-    icon = "splash.png"
+    title = "PrivaChat"
+    icon = "logo.png"
 
     back_key = 27
 
@@ -198,12 +203,12 @@ class PrivaChat(MDApp):
                 ]
 
     def write_settings(self,key,value):
-        file = open("setting.py","r")
+        file = open(os.path.abspath("setting.py"),"r")
         read = file.read().split("\n")
         for count,line in enumerate(read):
             if line.split(" ")[0] == key:
                 read[count] = key+" = "+value
-                open("setting.py","w").write("\n".join(read))
+                open(os.path.abspath("setting.py"),"w").write("\n".join(read))
 
     def build(self):
         self.lock_pass = self.read_settings()[7]
@@ -606,8 +611,40 @@ class PrivaChat(MDApp):
             Toast(f"Error : {error}")
         Clock.schedule_once(run)
 
-    def get_ip_aadr(self) -> str:
-        pass
+    def set_addr(self):
+        self.server_view.ids.test_text_feild.text = self.get_random_ip_port()
+
+    def get_random_ip_port(self) -> str:
+        if platform == "android":
+            try:
+                return self.get_ip_aadr_android()+":"+str(random.randint(2000,9999))
+            except Exception:
+                return ""
+        else:
+            return self.get_ip_linux()+":"+str(random.randint(2000,9999))
+
+    def get_ip_linux(self) -> str:
+        if shutil.which("ifconfig") is not None:
+            cmd_out = os.popen(shutil.which("ifconfig")).read().split("inet")
+            ips = []
+            for c in cmd_out:
+                if self.vaild_addr(c.split("netmask")[0].strip()):
+                    ips.append(c.split("netmask")[0].strip())
+            return ips[-1]
+        else:
+            raise FileNotFoundError("ifconfig not in $PATH")
+
+    def get_ip_aadr_android(self) -> str:
+        SystemService = jnius.autoclass("android.content.Context")
+        activity = jnius.autoclass("org.kivy.android.PythonActivity").mActivity
+        context = activity.getApplicationContext()
+        connectivity_service = context.getSystemService(SystemService.CONNECTIVITY_SERVICE)
+        wifi_service = context.getSystemService(SystemService.WIFI_SERVICE)   
+        network_info = connectivity_service.getActiveNetworkInfo()
+        wifi_info = wifi_service.getConnectionInfo()
+        ip_address = wifi_info.getIpAddress()
+        int_to_ip = lambda x: ".".join(str(int((x+2**32)/(256**i)% 256)) for i in range(4))
+        return int_to_ip(int(ip_address))
 
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()

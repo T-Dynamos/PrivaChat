@@ -127,7 +127,7 @@ MDScreen:
 					size_hint:None,None 
 					size:app.x()-dp(80),dp(60)
 					ripple_behavior:True
-					on_press:app.server_view.open() if app.server_running == False else app.stop_server()
+					on_press:app.server_view.open();app.set_addr() if app.server_running == False else app.stop_server()
 					RelativeLayout:
 						MDLabel:
 							id:server_text
@@ -142,7 +142,7 @@ MDScreen:
 							icon:"plus"
 						MDCustomCard:
 							md_bg_color:0,0,0,0
-							on_press:app.server_view.open() if app.server_running == False else app.stop_server()
+							on_press:app.server_view.open();app.set_addr() if app.server_running == False else app.stop_server()
 	MDCustomCard:
 		id:control
 		pos_hint:{"center_x":0.5,"center_y":0.95}

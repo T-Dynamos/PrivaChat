@@ -1,5 +1,5 @@
 save_chats = False 
-wallpaper = "wallpapers/keyboards.jpg"
+wallpaper = "wallpapers/hack.jpg"
 chat_color = "#FCEFBA"
 wallpaper_path = ["wallpapers"]
 accent_palette = "DeepPurple"
