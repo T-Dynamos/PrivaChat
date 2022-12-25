@@ -1,104 +1,22 @@
 [app]
-
-# (str) Title of your application
 title = PrivaChat
-
-# (str) Package name
 package.name = privachat
-# (str) Package domain (needed for android/ios packaging)
 package.domain = com.tdynamos
-
-# (str) Source code where the main.py live
 source.dir = .
-
-# (list) Source files to include (let empty to include all the files)
-#source.include_exts = py,png,jpg,kv,atlas
-
-# (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
-
-# (list) Source files to exclude (let empty to not exclude anything)
-#source.exclude_exts = spec
-
-# (list) List of directory to exclude (let empty to not exclude anything)
-#source.exclude_dirs = tests, bin, venv
-
-# (list) List of exclusions using pattern matching
-# Do not prefix with './'
-#source.exclude_patterns = license,images/*/*.jpg
-
-# (str) Application versioning (method 1)
-#version = 0.1
-
-# (str) Application versioning (method 2)
-
+source.exclude_dirs = bin,.buildozer,.git,.github,screenshots
 version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/main.py
-
-# (list) Application requirements
-# comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.1.0,https://github.com/kivymd/KivyMD/archive/refs/heads/master.zip,requests,paramiko,pillow,cryptography,cffi,pynacl,gestures4kivy,kivy_garden.frostedglass
-
-# (str) Custom source folders for requirements
-# Sets custom source for any requirements with recipes
-# requirements.source.kivy = ../../kivy
-
-# (str) Presplash of the application
+requirements = python3,kivy==2.1.0,kivymd,pillow,gestures4kivy,kivy_garden.frostedglass
 presplash.filename = splash.png
-
-# (str) Icon of the application
 icon.filename = logo.png
-
-# (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
-
-# (list) List of service to declare
-#services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
-
-#
-# OSX Specific
-#
-
-#
-# author = © Copyright Info
-
-# change the major version of python used by the app
-osx.python_version = 3
-
-# Kivy version to use
-osx.kivy_version = 1.9.1
-
-#
-# Android specific
-#
-
-# (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
-
-# (string) Presplash background color (for android toolchain)
-# Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
-# red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
-# darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
-# olive, purple, silver, teal.
 android.presplash_color = #1D2227
-
-# (string) Presplash animation using Lottie format.
-# see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
-# for general documentation.
-# Lottie files can be created using various tools, like Adobe After Effect or Synfig.
 #android.presplash_lottie = "path/to/lottie/file.json"
-
-# (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
 #icon.adaptive_foreground.filename = %(source.dir)s/data/icon_fg.png
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
-
-# (list) Permissions
 android.permissions = INTERNET
-
-# (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
-
-# (int) Target Android API, should be as high as possible.
 android.api = 30
 
 # (int) Minimum API your APK / AAB will support.
@@ -262,13 +180,7 @@ android.api = 30
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = armeabi-v7a
-
-# (int) overrides automatic versionCode computation (used in build.gradle)
-# this is not the same as app version and should only be edited if you know what you're doing
-# android.numeric_version = 1
-
-# (bool) enables Android auto backup feature (Android API >=23)
+android.archs = armeabi-v7a,x86
 android.allow_backup = True
 
 # (str) XML file for custom backup rules (see official auto backup documentation)

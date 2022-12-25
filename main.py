@@ -41,6 +41,7 @@ if platform != "android":
     from kivy.core.window import Window
     Window.size = [dp(380), dp(650)]
 
+from kivy.core.window import Window
 Config.set("kivy", "exit_on_escape", "0")
 
 
@@ -605,8 +606,10 @@ class PrivaChat(MDApp):
             Toast(f"Error : {error}")
         Clock.schedule_once(run)
 
+    def get_ip_aadr(self) -> str:
+        pass
+
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()
-
 
 PrivaChat().run()
