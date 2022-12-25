@@ -215,7 +215,7 @@ class PrivaChat(MDApp):
         self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = self.read_settings()[5]
         self.theme_cls.primary_palette = self.read_settings()[6]
-        self.theme_cls.theme_style = "Dark" 
+        self.theme_cls.theme_style = "Dark"
         self.chat_color = self.read_settings()[3]
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
