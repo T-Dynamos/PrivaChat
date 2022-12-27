@@ -19,9 +19,9 @@ android.presplash_color = #1D2227
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 android.permissions = INTERNET, ACCESS_WIFI_STATE,ACCESS_NETWORK_STATE
 #android.features = android.hardware.usb.host
-android.api = 30
-#android.minapi = 21
-#android.sdk = 20
+android.api = 31
+android.minapi = 21
+android.sdk = 33
 #android.ndk = 19b
 #android.ndk_api = 21
 #android.private_storage = True
@@ -30,8 +30,9 @@ android.api = 30
 #android.activity_class_name = org.kivy.android.PythonActivity
 #android.extra_manifest_xml = ./src/android/extra_manifest.xml
 # android.apptheme = "@android:style/Theme.NoTitleBar"
-#android.gradle_dependencies =
-#android.enable_androidx = False
+android.gradle_dependencies = "com.google.firebase:firebase-ads:21.4.0"
+android.enable_androidx = True
+android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-3940256099942544~3347511713
 # android.add_compile_options = "sourceCompatibility = 1.8", "targetCompatibility = 1.8"
 # e.g. android.gradle_repositories = "maven { url 'https://kotlin.bintray.com/ktor' }"
 #android.add_gradle_repositories =

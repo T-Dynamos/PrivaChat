@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 # Coder : T-Dynamos (Ansh Dadwal)
 
 from kivy.lang import Builder
@@ -45,6 +46,7 @@ if platform != "android":
 
 if platform == "android":
     import jnius
+    from kivmob import *
 
 from kivy.core.window import Window
 Config.set("kivy", "exit_on_escape", "0")
@@ -188,6 +190,16 @@ class PrivaChat(MDApp):
     def ch_s(self,size):
         self.text_size = size
 
+    def load_app(self):
+        if platform == "android":
+            print("Ad called")
+            self.load_ad_android()
+
+    def load_ad_android(self):
+        self.ads = KivMob(TestIds.APP)
+        self.ads.new_interstitial(TestIds.INTERSTITIAL)
+        self.ads.request_interstitial()
+        self.ads.show_interstitial()
 
     def read_settings(self):
         import setting

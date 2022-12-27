@@ -47,7 +47,7 @@ MDScreen:
 					size_hint:None,None 
 					size:app.x()-dp(80),dp(60)
 					ripple_behavior:True
-					on_press:app.chat_view.open()
+					on_press:app.load_ad();app.chat_view.open()
 					RelativeLayout:
 						MDLabel:
 							text:"Connect to server"
