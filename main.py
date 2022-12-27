@@ -190,7 +190,8 @@ class PrivaChat(MDApp):
     def ch_s(self,size):
         self.text_size = size
 
-    def load_app(self):
+    def load_ad(self):
+        print("Added calling")
         if platform == "android":
             print("Ad called")
             self.load_ad_android()
