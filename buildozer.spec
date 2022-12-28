@@ -30,9 +30,10 @@ android.sdk = 33
 #android.activity_class_name = org.kivy.android.PythonActivity
 #android.extra_manifest_xml = ./src/android/extra_manifest.xml
 # android.apptheme = "@android:style/Theme.NoTitleBar"
-android.gradle_dependencies = "com.google.firebase:firebase-ads:21.4.0"
+android.gradle_dependencies = "com.google.firebase:firebase-ads:10.2.0"
+#"21.4.0"
 android.enable_androidx = True
-android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-3940256099942544~3347511713
+android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-1400437871441093~9758605790
 # android.add_compile_options = "sourceCompatibility = 1.8", "targetCompatibility = 1.8"
 # e.g. android.gradle_repositories = "maven { url 'https://kotlin.bintray.com/ktor' }"
 #android.add_gradle_repositories =

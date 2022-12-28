@@ -48,6 +48,7 @@ if platform == "android":
     import jnius
     from kivmob import *
 
+
 from kivy.core.window import Window
 Config.set("kivy", "exit_on_escape", "0")
 
@@ -197,8 +198,7 @@ class PrivaChat(MDApp):
             self.load_ad_android()
 
     def load_ad_android(self):
-        self.ads = KivMob(TestIds.APP)
-        self.ads.new_interstitial(TestIds.INTERSTITIAL)
+        self.ads.new_interstitial("ca-app-pub-1400437871441093/3864750867")
         self.ads.request_interstitial()
         self.ads.show_interstitial()
 
@@ -233,6 +233,8 @@ class PrivaChat(MDApp):
         self.theme_cls.material_style = "M3"
         self.screen_manager.add_widget(Builder.load_file("kvfiles/splash.kv"))
         self.screen_manager.current = "splash"
+        if platform == "android":
+            self.ads = KivMob("ca-app-pub-1400437871441093~9758605790")
         return self.screen_manager
 
     def set_mode(self, instance):
