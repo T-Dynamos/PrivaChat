@@ -17,6 +17,7 @@ jobs:
         with:
           workdir: .
           buildozer_version: stable
+          command: buildozer android release
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
