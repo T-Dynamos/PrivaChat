@@ -1,7 +1,7 @@
 <ListSwitch@MDBoxLayout>:
 	text:""
 	active: False
-	s_press:print
+	s_press:app.do_nothing
 	size_hint:None,None 
 	size:app.x(),dp(50)
 	padding:dp(10)
@@ -19,7 +19,7 @@
 	size_hint:None,None 
 	size:app.x(),dp(50)
 	padding:dp(10)
-	press:print
+	press:app.do_nothing
 	RelativeLayout:
 		MDLabel:
 			text:root.text

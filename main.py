@@ -213,6 +213,9 @@ class PrivaChat(MDApp):
         "BlueGray":"#607D8B"
                 }
 
+    def do_nothing(self,arg):
+        pass
+
     def open_wall(self):
         self.wall_change.open()
 
@@ -224,9 +227,7 @@ class PrivaChat(MDApp):
         self.text_size = size
 
     def load_ad(self,*largs):
-        print("Added calling")
         if platform == "android":
-            print("Ad called")
             self.load_ad_android()
 
     def load_ad_android(self):
