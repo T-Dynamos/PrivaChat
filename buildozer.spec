@@ -85,10 +85,8 @@ android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-1400437
 
 # (bool) Copy library instead of making a libpymodules.so
 #android.copy_libs = 1
-
-# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-# In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = armeabi-v7a,x86
+# This will create a multiarch bundle
+android.archs = armeabi-v7a,x86,arm64-v8a,x86_64
 android.allow_backup = True
 
 # (str) XML file for custom backup rules (see official auto backup documentation)

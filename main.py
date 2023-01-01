@@ -69,8 +69,6 @@ class PersonText(MDRelativeLayout):
 class HoverLayout(MDCard, HoverBehavior):
     pass
 
-class ThemeCircle(MDCard):
-    pass
 
 class MDCustomCard(
     DeclarativeBehavior,
@@ -93,6 +91,10 @@ class MDCustomCard(
     def on_double_tap(self, touch, *args):
         if self.name == "chatcard":
             Animation(opacity=0,d=0.3).start(self.parent)
+
+class ThemeCircle(MDCustomCard):
+    pass
+
 
 class MDScreenG(MDScreen,CommonGestures):
 
