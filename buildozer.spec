@@ -30,7 +30,7 @@ android.minapi = 21
 #android.activity_class_name = org.kivy.android.PythonActivity
 #android.extra_manifest_xml = ./src/android/extra_manifest.xml
 # android.apptheme = "@android:style/Theme.NoTitleBar"
-android.gradle_dependencies = "com.google.firebase:firebase-ads:10.2.0"
+android.gradle_dependencies = "com.google.firebase:firebase-ads:19.6.0" ,"androidx.work:work-runtime-ktx:2.7.1"
 #"21.4.0"
 android.enable_androidx = True
 android.meta_data = com.google.android.gms.ads.APPLICATION_ID=ca-app-pub-1400437871441093~9758605790
