@@ -8,7 +8,7 @@ source.exclude_dirs = bin,.buildozer,.git,.github,screenshots
 version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/main.py
 #version = 1
-requirements = python3,kivy==2.1.0,kivymd,pillow,gestures4kivy,kivy_garden.frostedglass
+requirements = python3,kivy==master,https://github.com/kivymd/KivyMD/archive/refs/heads/master.zip,gestures4kivy,kivy_garden.frostedglass
 presplash.filename = splash.png
 icon.filename = logo.png
 orientation = portrait
