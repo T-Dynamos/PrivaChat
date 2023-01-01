@@ -44,7 +44,6 @@
 		padding:dp(10) 
 		orientation:"vertical"
 		md_bg_color:app.theme_cls.bg_normal
-		on_press:app.erase_message(root)
 		MDLabel:
 			text:"[font=assets/SourceCodePro-Regular.otf]["+app.date()+"][/font] : "+"[color=#FF9800]"+root.nickname+"[/color]"
 			font_name:"assets/Poppins-Bold.ttf"
@@ -57,6 +56,7 @@
 			text:root.text+str(app.ch_s(self.size))[:-4]
 			font_name:"assets/Poppins-Regular.ttf"
 			font_size:"15sp"
+
 ModalView:
 	background_color:0,0,0,0
 	on_open:app.open_modal(self)

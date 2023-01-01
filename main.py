@@ -34,12 +34,13 @@ import _thread
 import appServer
 import os
 import shutil
+import sys
 
 __version__ = "1.0"
 
 if platform != "android":
-    Config.set("graphics", "height", "700")
-    Config.set("graphics", "width", "400")
+    Config.set("graphics", "height", "650")
+    Config.set("graphics", "width", "380")
     Config.set("graphics", "fps", "120")
     from kivy.core.window import Window
     Window.size = [dp(380), dp(650)]
@@ -127,6 +128,33 @@ def Toast(string, *largs):
         Clock.schedule_once(partial(Toast1, string))
 
 
+def get_private_storage_path() -> str:
+    if platform == "linux":
+        try:
+            private_storage = f"/home/{os.popen('whoami').read()[:-1]}/.privachat"
+            if os.path.isdir(private_storage) != True:
+                os.mkdir(private_storage)
+            return os.path.abspath(private_storage)
+        except PermissionError:
+            raise PermissionError(f"Unable to write {private_storage}")
+
+    elif platform == "android":
+        return "/data/data/com.tdynamos.privachat/shared_prefs/"
+
+def init_settings_data() -> None:
+    data = """
+save_chats = False
+wallpaper = "wallpapers/girl.jpg"
+chat_color = "#162D3E"
+wallpaper_path = ["wallpapers"]
+accent_palette = "DeepPurple"
+primary_palette = "Red"
+lock_pass = None
+dark_mode=True
+    """
+    with open(os.path.abspath(os.path.join(get_private_storage_path(),"setting.py")),"w") as file:
+        file.write(data)
+
 class PrivaChat(MDApp):
     __version__ = __version__
 
@@ -150,6 +178,11 @@ class PrivaChat(MDApp):
     Toast = lambda self,text : Toast(text)
 
     date = lambda self: datetime.now().strftime("%H:%M:%S")
+    settings_file = os.path.abspath(
+            os.path.join(
+                get_private_storage_path(),"setting.py"
+                )
+            )
     nickname = ""
     chat_length = 1000
     text_size = None
@@ -162,7 +195,7 @@ class PrivaChat(MDApp):
     MDLabel = MDLabel
 
     colors =  {
-        "Red":  "#F44336", 
+        "Red":  "#F44336",
         "Pink": "#E91E63", 
         "Purple":"#9C27B0", 
         "DeepPurple":"#673AB7", 
@@ -185,13 +218,12 @@ class PrivaChat(MDApp):
 
     def open_theme(self):
         #for i in self.colors.keys():
-
         self.theme_change.open()
 
     def ch_s(self,size):
         self.text_size = size
 
-    def load_ad(self):
+    def load_ad(self,*largs):
         print("Added calling")
         if platform == "android":
             print("Ad called")
@@ -216,14 +248,19 @@ class PrivaChat(MDApp):
                 ]
 
     def write_settings(self,key,value):
-        file = open("setting.py","r")
+        file = open(self.settings_file,"r")
         read = file.read().split("\n")
         for count,line in enumerate(read):
             if line.split(" ")[0] == key:
                 read[count] = key+" = "+value
-                open("setting.py","w").write("\n".join(read))
+                open(self.settings_file,"w").write("\n".join(read))
 
     def build(self):
+        if os.path.isfile(self.settings_file):
+            sys.path.append(get_private_storage_path())
+        else:
+            init_settings_data()
+            sys.path.append(get_private_storage_path())
         self.lock_pass = self.read_settings()[7]
         self.chat_img = self.read_settings()[2]
         self.theme_cls.accent_palette = self.read_settings()[5]
@@ -235,6 +272,7 @@ class PrivaChat(MDApp):
         self.screen_manager.current = "splash"
         if platform == "android":
             self.ads = KivMob("ca-app-pub-1400437871441093~9758605790")
+        Clock.schedule_interval(self.load_ad,60)
         return self.screen_manager
 
     def set_mode(self, instance):
@@ -659,7 +697,7 @@ class PrivaChat(MDApp):
         wifi_info = wifi_service.getConnectionInfo()
         ip_address = wifi_info.getIpAddress()
         int_to_ip = lambda x: ".".join(str(int((x+2**32)/(256**i)% 256)) for i in range(4))
-        return int_to_ip(int(ip_address))
+        return int_to_ip(int(ip_address)) if int_top_ip(int(ip_address)) != "0.0.0.0" else "127.0.0.1" 
 
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()

@@ -26,7 +26,7 @@ logo  = f"""{W}
 class CliHandler():
     logs = ["Welcome to PrivaChat!"]
     errors = []
-    name = "core"
+    name = os.popen("whoami").read()[:-1]
     connect = None
     executed = False
 
