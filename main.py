@@ -700,7 +700,7 @@ class PrivaChat(MDApp):
         wifi_info = wifi_service.getConnectionInfo()
         ip_address = wifi_info.getIpAddress()
         int_to_ip = lambda x: ".".join(str(int((x+2**32)/(256**i)% 256)) for i in range(4))
-        return int_to_ip(int(ip_address)) if int_top_ip(int(ip_address)) != "0.0.0.0" else "127.0.0.1" 
+        return int_to_ip(int(ip_address))
 
     def stop_server(self):
         self.dialog_constructor("Shutdown requires restart","Cancel","SHUTDOWN",self.stop).open()
