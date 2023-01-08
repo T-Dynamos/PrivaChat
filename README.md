@@ -2,7 +2,7 @@
 
 <p align="center">
 
-<img width="30%" height="30%" src="logo.png"/>
+<img width="30%" height="30%" src="https://user-images.githubusercontent.com/68729523/211198237-81126c20-5f1d-4b78-83a3-87af1a42e434.png"/>
 
 </p>
 
@@ -48,4 +48,5 @@ For apks see releases
 ## Chat Features (In GUI) 
 
 * Message Hiding
+
 > ![img](https://github.com/T-Dynamos/T-Dynamos/raw/main/images/ezgif-3-0e79abfaa4.gif)
